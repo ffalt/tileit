@@ -57,12 +57,15 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 	if (!config["allowed_format"].indexOf(req.params.format) < 0) {
 		return res.send(404, 'format invalid :.(');
 	}
-	var x = parseInt(req.params.x);
-	var y = parseInt(req.params.y);
-	var z = parseInt(req.params.z);
+	var x = parseFloat(req.params.x);
+	var y = parseFloat(req.params.y);
+	var z = parseFloat(req.params.z);
 	if (isNaN(z) || isNaN(x) || isNaN(y)) {
 		return res.send(404, 'parameters invalid :.(');
 	}
+	x = Math.round(x);
+	y = Math.round(y);
+	z = Math.round(z);
 	var limit = Math.pow(2, z) - 1;
 //	var mx = x - x % 8;
 //	var my = y - y % 8;
