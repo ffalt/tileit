@@ -1,0 +1,6 @@
+.DS_STORE
+.idea/
+config.js
+data/
+local/
+node_modules/

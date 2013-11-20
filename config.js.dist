@@ -1,0 +1,53 @@
+module.exports = {
+	"hostname": "localhost",
+	"port": 80,
+	"allowed_format": ["png", "jpg"],
+	"enabled_plugs": ["memcached", "file", "tirex", "tilethief"],
+	"max_age": 3 * 60 * 60 * 1000,
+	"tirex": {
+		"config_dir": "./data/tirex/renderer/",
+		"master_udp_port": 9322,
+		"master_udp_host": "127.0.0.1",
+		"timeout": 1000
+	},
+	"tilethief": {
+		"concurrent_requests": 10,
+		"maps": {
+			"demo": {
+				"backend_url": 'http://somewhere',
+				"backend_map": 'mapname',
+				"minz": 0,
+				"maxz": 18,
+				"allowed_format": ["png"],
+				"path": "./data/tiles.xyz.ext/demo"
+			}
+		}
+	},
+	"file": {
+		"maps": {
+			"demo": {
+				"minz": 0,
+				"maxz": 18,
+				"allowed_format": ["png"],
+				"path": "./data/tiles.xyz.ext/demo",
+				"allow_store": true
+			}
+		}
+	},
+	"memcached": {
+		"host": "localhost",
+		"port": "11212",
+		"rev": "0",
+		"prefix": "tiles_",
+		"options": {
+			"timeout": 1000,
+			"maxExpiration": 2592000,
+			"maxValue": 1048576,
+			"poolSize": 10,
+			"retries": 5,
+			"failures": 5,
+			"retry": 30000,
+			"idle": 5000
+		}
+	}
+};

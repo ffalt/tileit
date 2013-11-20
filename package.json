@@ -1,0 +1,45 @@
+{
+	"name": "tileit",
+	"version": "0.1.0",
+	"description": "a node.js slippy maps tile server",
+	"licenses": [
+		{
+			"type": "Public Domain",
+			"url": "http://unlicense.org/UNLICENSE"
+		}
+	],
+	"author": "ffalt <ffalt@datenfreunde.com>",
+	"maintainers": [
+		{
+			"name": "ffalt",
+			"email": "ffalt@datenfreunde.com",
+			"web": "http://datenfreunde.com/"
+		}
+	],
+	"main": "./tileit.js",
+	"bin": {
+		"tileit": "./tileit.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ffalt/tileit.git"
+	},
+	"keywords": [
+		"map",
+		"tiles",
+		"cache",
+		"mirror",
+		"tile",
+		"geo"
+	],
+	"dependencies": {
+		"mkdirp": ">= 0.3.5",
+		"async": ">= 0.2.9",
+		"memcached": ">= 0.2.6",
+		"request": ">= 2.14.0",
+		"express": ">= 3.1.0"
+	},
+	"engines": {
+		"node": ">= 0.8.15"
+	}
+}

@@ -1,4 +1,23 @@
-tileit
-======
+# TileIt
 
-a node js slippy maps tile server
+a node.js slippy maps tile server
+
+
+Tiles Sources:
+  - file: just a bunch of file in folders; format "/path_to_in_config/[mapname]/[z]/[x]/[y].[ext]"
+  - memcached: serve files from memory
+  - tirex: request & deliver tiles from tirex metatiles renderer
+  - tilethief: A mirroring map tile proxy derived from https://github.com/yetzt/tilethief.git
+
+
+## Configuration
+
+rename `config.js.dist` to `config.js` and edit the settings with your favorite editor
+
+
+## TODO
+
+general: max-age strategy?
+memcached: expiration strategy?
+tirex: testing
+
