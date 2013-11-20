@@ -48,7 +48,7 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 	var avail_checks = plugs.filter(function (check) {
 		return check.isKnownMap(req.params.map);
 	});
-	var store_plugs = plugs.filter(function (plug) {
+	var store_plugs = avail_checks.filter(function (plug) {
 		return plug.wantsStorage(req.params.map);
 	});
 	if (avail_checks.length == 0) {
