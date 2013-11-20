@@ -9,7 +9,7 @@ var app = express();
 app.set('port', config.port || 8080);
 app.set('hostname', config.hostname || 'localhost');
 
-if (process.env.NODE_ENV !== 'production') {
+if (config.debug) {//} (process.env.NODE_ENV !== 'production') {
 	console.debug = console.log;
 } else {
 	console.debug = function () {
