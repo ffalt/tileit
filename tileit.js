@@ -29,13 +29,13 @@ var stats = {
 };
 
 app.get('/stats', function (req, res) {
-	var stats = {
+	var stat = {
 		general: stats,
 		plugs: plugs.map(function (check) {
 			return check.getStats();
 		})
 	};
-	res.json(stats);
+	res.json(stat);
 });
 
 app.get('/', function (req, res) {
@@ -47,9 +47,6 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 //	console.debug(req.headers);
 	var avail_checks = plugs.filter(function (check) {
 		return check.isKnownMap(req.params.map);
-	});
-	var store_plugs = avail_checks.filter(function (plug) {
-		return plug.wantsStorage(req.params.map);
 	});
 	if (avail_checks.length == 0) {
 		return res.send(404, 'map not known :.(');
@@ -79,6 +76,9 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 	if (avail_checks.length == 0) {
 		return res.send(404, 'invalid parameters :.(');
 	}
+	var store_plugs = avail_checks.filter(function (plug) {
+		return plug.wantsStorage(req.params.map);
+	});
 	stats.num_open_connections++;
 	stats.requested++;
 	var check = function (i) {
