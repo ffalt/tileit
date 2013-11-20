@@ -1,6 +1,7 @@
 module.exports = {
 	"hostname": "localhost",
 	"port": 80,
+	"debug": false,
 	"allowed_format": ["png", "jpg"],
 	"enabled_plugs": ["memcached", "file", "tirex", "tilethief"],
 	"max_age": 3 * 60 * 60 * 1000,
