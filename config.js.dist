@@ -39,6 +39,7 @@ module.exports = {
 		"port": "11212",
 		"rev": "0",
 		"prefix": "tiles_",
+		"expiration": 1000000,
 		"options": {
 			"timeout": 1000,
 			"maxExpiration": 2592000,
