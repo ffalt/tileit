@@ -84,13 +84,13 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 	var check = function (i) {
 		console.debug('[Server] Checking Plug: ' + avail_checks[i].stats.name);
 		avail_checks[i].getImage(req.params.map, x, y, z, req.params.format, function (err, data) {
+			stats.num_open_connections--;
 			if ((err) || (!data)) {
 				if (i < avail_checks.length - 1) {
 					check(i + 1);
 				} else {
 					res.send(503, err || 'internal error :.(');
 					stats.notfound++;
-					stats.num_open_connections--;
 				}
 			} else {
 				console.debug('[Server] Success, now sending data: ' + avail_checks[i].stats.name);
@@ -103,7 +103,6 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 					res.send(200, data.buffer);
 				}
 				stats.served++;
-				stats.num_open_connections--;
 
 				if (store_plugs.length > 0) {
 					if (data.filename) {
