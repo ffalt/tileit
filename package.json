@@ -37,7 +37,8 @@
 		"async": ">= 0.2.9",
 		"memcached": ">= 0.2.6",
 		"request": ">= 2.14.0",
-		"express": ">= 3.1.0"
+		"express": ">= 3.1.0",
+		"unix-dgram": ">= 0.0.2"
 	},
 	"engines": {
 		"node": ">= 0.8.15"
