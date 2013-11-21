@@ -7,8 +7,7 @@ module.exports = {
 	"max_age": 3 * 60 * 60 * 1000,
 	"tirex": {
 		"config_dir": "./data/tirex/renderer/",
-		"master_udp_port": 9322,
-		"master_udp_host": "127.0.0.1",
+	    "master_socket": "/run/tirex/master.sock",
 		"timeout": 1000
 	},
 	"tilethief": {
