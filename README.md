@@ -8,6 +8,7 @@ Tiles Sources:
   - memcached: serve files from memory
   - tirex: request & deliver tiles from tirex metatiles renderer derived from http://svn.openstreetmap.org/applications/utils/tirex/tileserver/
   - tilethief: A mirroring map tile proxy derived from https://github.com/yetzt/tilethief.git
+  - wms: A mirroring map tile proxy for wms-server
 
 
 ## Configuration
@@ -21,5 +22,5 @@ general: max-age strategy?
 
 memcached: expiration strategy?
 
-tirex: testing
+wms: testing
 

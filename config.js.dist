@@ -10,6 +10,21 @@ module.exports = {
 		"master_socket": "/run/tirex/master.sock",
 		"timeout": 1000
 	},
+	"wms": {
+		"concurrent_requests": 10,
+   		"maps": {
+   			"demowms": {
+   				"url": "http://wms-server",
+   				"format": "png",
+   				"layers": "layername",
+   				"crs": "EPSG:4326",
+   				"tilesize": 256,
+   				"minz": 6,
+   				"maxz": 12,
+   				"path": "./data/tiles.xyz.ext/demowms"
+   			}
+   		}
+   	},
 	"tilethief": {
 		"concurrent_requests": 10,
 		"maps": {
