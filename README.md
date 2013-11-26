@@ -86,6 +86,7 @@ Note: Maps for Tirex are loaded from the Tirex configuration path, so no extra c
 
 see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/maps/map-examples/</a> for examples
 
+
 ### Source Configuration
 
 #### file
