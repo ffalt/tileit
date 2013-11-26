@@ -80,12 +80,30 @@ you can defy one or more maps in a json file, residing in /maps/map-enabled/ (ma
 }
 ```
 
-Note: Maps for Tirex are loaded from the Tirex configuration path, so no extra config files are needed. You may overwrite a tirex map by just reusing the map name (eg. for memcaching)
+Note: Maps for Tirex are loaded from the Tirex configuration path, so no extra config files are needed. You may overwrite a tirex map by just reusing the map name (e.g. for memcaching)
 
 see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/maps/map-examples/</a> for examples
 
 
-### Source Configuration
+### Map Source Configuration
+
+You can defy one or more map sources. 
+
+**e.g. file**
+
+tile file exists or not
+
+**e.g. memcached,file,wms**
+
+look for tile in memcached, if not existing look for in file system, if not existing look in wms
+
+auto store in sources, if found in wms -> store in file,memcached, if found file -> store in memcached
+
+**e.g. file,tirex**
+
+look for tile in file system, if not existing look for in metatile-file system, if not existing request tirex to render the metatile
+
+
 
 #### file
 
@@ -124,9 +142,16 @@ see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/map
 
 ## TODO
 
-general: max-age strategy?
+general: 
 
-memcached: expiration strategy?
+- max-age strategy? 
+- better logging
 
-wms: testing
+memcached: 
+
+- expiration strategy?
+
+wms: 
+
+- add and test more projections
 
