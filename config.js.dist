@@ -20,8 +20,7 @@ module.exports = {
 		"concurrent_requests": 10
 	},
 	"memcached": {
-		"host": "localhost",
-		"port": "11211",
+		"hosts": "localhost:11211",
 		"rev": "0",
 		"prefix": "tiles_",
 		"expiration": 1000000,

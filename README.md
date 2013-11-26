@@ -41,12 +41,11 @@ module.exports = {
 		"concurrent_requests": 10       // how many wms tiles can be process parallel
 	},
 	"memcached": {
-		"host": "localhost",            // host adress of memcached
-		"port": "11211",                // port of memcached
+		"hosts": "localhost:11211",      // host/hosts & ports of memcached
 		"rev": "0",                     // invalidate all tiles by a version number (may be overwritten individually by map config) 
 		"prefix": "tiles_",             // prefix map names (may be overwritten individually by map config)
 		"expiration": 1000000,          // a tile can be replaced after ms (may be overwritten individually by map config)
-		"options": {
+		"options": {					// see <a href="https://github.com/3rd-Eden/node-memcached">node-memcached</a> for all options
 			"timeout": 10,                // timeout of a memcached request
 			"maxExpiration": 2592000      // maximal timeout of a memcached request
 		}
