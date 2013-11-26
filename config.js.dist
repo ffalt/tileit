@@ -3,7 +3,7 @@ module.exports = {
 	"port": 80,
 	"debug": true,
 	"plugs": ["memcached", "wms", "file", "tirex", "tiles"],
-	"mapconfigpath": "./maps/enabled_maps",
+	"configpath": "./maps/enabled_maps",
 	"max_age": 3 * 60 * 60 * 1000,
 	"wms": {
 		"concurrent_requests": 10

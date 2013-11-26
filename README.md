@@ -29,7 +29,7 @@ module.exports = {
 	"port": 80,                                     // port of the tileserver
 	"debug": true,                                  // display debug messages in console
 	"plugs": ["memcached", "wms", "file", "tirex", "tiles"],  // enabled plugs
-	"mapconfigpath": "./maps/enabled_maps",         // load map configs from this path
+	"configpath": "./maps/enabled_maps",         // load map configs from this path
 	"max_age": 3 * 60 * 60 * 1000,                  // max age header for http-request
 	"tirex": {
 		"config_dir": "./data/tirex/renderer/",       // path to Tirex config
@@ -64,6 +64,10 @@ see <a href="https://github.com/3rd-Eden/node-memcached">node-memcached</a> for 
 
 you can defy one or more maps in a json file, residing in /maps/map-enabled/ (maybe linked there from /maps/map-available) 
 
+or you can build your map configs in javascript
+
+Note: Maps for Tirex are loaded from the Tirex configuration path, so no extra config files are needed. You may overwrite a tirex map by just reusing the map name (eg. for memcaching)
+
 ```json
 {
 	"mapname": {                    //mandatory, mapname is used in tile-url
@@ -80,10 +84,7 @@ you can defy one or more maps in a json file, residing in /maps/map-enabled/ (ma
 }
 ```
 
-Note: Maps for Tirex are loaded from the Tirex configuration path, so no extra config files are needed. You may overwrite a tirex map by just reusing the map name (eg. for memcaching)
-
 see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/maps/map-examples/</a> for examples
-
 
 ### Source Configuration
 
