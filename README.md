@@ -80,9 +80,9 @@ you can defy one or more maps in a json file, residing in /maps/map-enabled/ (ma
 }
 ```
 
-Note: Maps for Tirex are loaded from the Tirex configuration path
+Note: Maps for Tirex are loaded from the Tirex configuration path, so no extra config files are needed. You may overwrite a tirex map by just reusing the map name (eg. for memcaching)
 
-see /maps/map-examples/ for more examples
+see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/maps/map-examples/</a> for examples
 
 
 ### Source Configuration
