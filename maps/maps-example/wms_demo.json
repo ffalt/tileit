@@ -1,0 +1,25 @@
+{
+	"ber_zoom": {
+		"minz": 11,
+		"maxz": 18,
+		"source": {
+			"wms": {
+				"url": "http://fbinter.stadt-berlin.de/fb/wms/senstadt/berlinzoom?",
+				"layers": "0",
+				"crs": "EPSG:4326"
+			}
+		}
+	},
+	"ber_zoom_cached": {
+		"minz": 11,
+		"maxz": 18,
+		"source": {
+			"file": {},
+			"wms": {
+				"url": "http://fbinter.stadt-berlin.de/fb/wms/senstadt/berlinzoom?",
+				"layers": "0",
+				"crs": "EPSG:4326"
+			}
+		}
+	}
+}

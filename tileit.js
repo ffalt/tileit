@@ -1,13 +1,11 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
 var http = require('http');
 var express = require("express");
 var config = require(__dirname + "/config.js");
-
-var app = express();
-app.set('port', config.port || 8080);
-app.set('hostname', config.hostname || 'localhost');
+var Machine = require(__dirname + "/lib/machine.js").Machine;
+var Projections = require(__dirname + "/lib/utils_projections.js").Projections;
+var Stats = require(__dirname + '/lib/utils_stats.js').Stats;
 
 if (config.debug) {//} (process.env.NODE_ENV !== 'production') {
 	console.debug = console.log;
@@ -16,25 +14,29 @@ if (config.debug) {//} (process.env.NODE_ENV !== 'production') {
 	};
 }
 
-var plugs = config.enabled_plugs.map(function (plugname) {
-	var Storage = require(__dirname + '/lib/plug_' + plugname + '.js').Storage;
-	return new Storage();
+var plugs = {};
+config.plugs.forEach(function (plugname) {
+	var Plug = require(__dirname + '/lib/plug_' + plugname + '.js').Plug;
+	plugs[plugname] = new Plug(config[plugname]);
+	plugs[plugname].name = plugname;
+	plugs[plugname].stats = new Stats();
 });
 
-var stats = {
-	num_open_connections: 0,
-	requested: 0,
-	served: 0,
-	notfound: 0
-};
+var stats = new Stats();
+var lhc = new Machine();
+
+
+var app = express();
+app.set('port', config.port || 8080);
+app.set('hostname', config.hostname || 'localhost');
 
 app.get('/stats', function (req, res) {
 	var stat = {
-		general: stats,
-		plugs: plugs.map(function (check) {
-			return check.getStats();
-		})
+		general: stats
 	};
+	for (var key in plugs) {
+		stats[key] = plugs[key].stats;
+	}
 	res.json(stat);
 });
 
@@ -42,88 +44,67 @@ app.get('/', function (req, res) {
 	res.send('hi');
 });
 
+app.get('/:map/:z/:x/:y.:format/status', function (req, res) {
+	var result = {
+		map: req.params.map,
+		x: req.params.x,
+		y: req.params.y,
+		z: req.params.z,
+		format: req.params.format,
+		area: Projections.pixel_bbox(req.params.x, req.params.y),
+		point: Projections.pointToLatLng_EPSG3857([req.params.x, req.params.y], req.params.z),
+		bounds: Projections.latlng_bbox(req.params.x, req.params.y, req.params.z)
+	};
+	res.json(result);
+});
+
 app.get('/:map/:z/:x/:y.:format', function (req, res) {
 	console.debug('[Server] Request: ' + req.url);
 //	console.debug(req.headers);
-	var avail_checks = plugs.filter(function (check) {
-		return check.isKnownMap(req.params.map);
-	});
-	if (avail_checks.length == 0) {
+
+	var map = lhc.getMap(req.params.map);
+	if (!map) {
 		return res.send(404, 'map not known :.(');
 	}
-	if (!config["allowed_format"].indexOf(req.params.format) < 0) {
-		return res.send(404, 'format invalid :.(');
-	}
+
+	var format = req.params.format;
 	var x = parseFloat(req.params.x);
 	var y = parseFloat(req.params.y);
 	var z = parseFloat(req.params.z);
 	if (isNaN(z) || isNaN(x) || isNaN(y)) {
-		return res.send(404, 'parameters invalid :.(');
-	}
-	x = Math.round(x);
-	y = Math.round(y);
-	z = Math.round(z);
-	var limit = Math.pow(2, z) - 1;
-//	var mx = x - x % 8;
-//	var my = y - y % 8;
-//	var limit = 1 << z;
-	if ((x < 0) || (y < 0) || (x > limit) || (y > limit)) {
-		return res.send(404, 'position out of bounds :.(');
-	}
-	avail_checks = avail_checks.filter(function (check) {
-		return check.hasValidParams(req.params.map, x, y, z, req.params.format);
-	});
-	if (avail_checks.length == 0) {
 		return res.send(404, 'invalid parameters :.(');
 	}
-	var store_plugs = avail_checks.filter(function (plug) {
-		return plug.wantsStorage(req.params.map);
-	});
-	stats.num_open_connections++;
-	stats.requested++;
-	var check = function (i) {
-		console.debug('[Server] Checking Plug: ' + avail_checks[i].stats.name);
-		avail_checks[i].getImage(req.params.map, x, y, z, req.params.format, function (err, data) {
-			stats.num_open_connections--;
-			if ((err) || (!data)) {
-				if (i < avail_checks.length - 1) {
-					check(i + 1);
-				} else {
-					res.send(503, err || 'internal error :.(');
-					stats.notfound++;
-				}
+	x = Math.round(x); //fix for leaflet bug sending floats
+	y = Math.round(y);
+	z = Math.round(z);
+	if (!map.hasValidParams(x, y, z, format)) {
+		return res.send(404, 'position/zoom out of bounds :.(');
+	}
+
+	stats.validateMapStat(map.name);
+	stats.requested(map.name);
+	stats.current_inc(map.name);
+	map.getImage(x, y, z, format, function (err, result) {
+		stats.current_dec(map.name);
+		if ((err) || (!result)) {
+			res.send(503, err || 'internal error :.(');
+			stats.missing(map.name);
+		} else {
+			if (result.filename) {
+				res.status(200).sendfile(result.filename, {maxAge: config.max_age});
 			} else {
-				console.debug('[Server] Success, now sending data: ' + avail_checks[i].stats.name);
-				if (data.filename) {
-					res.status(200).sendfile(data.filename, {maxAge: config.max_age});
-				} else {
-					res.set('Content-Type', "image/" + data.format);
-					res.set('Content-Length', data.buffer.length);
-					res.set('Cache-Control', 'public, max-age=' + config.max_age);
-					res.send(200, data.buffer);
-				}
-				stats.served++;
-
-				if (store_plugs.length > 0) {
-					if (data.filename) {
-						data.buffer = fs.readFileSync(data.filename);
-						data.format = req.params.format;
-					}
-					for (var j = 0; j < store_plugs.length; j++) {
-						if (store_plugs[j] != avail_checks[i]) {
-							store_plugs[j].storeImage(req.params.map, x, y, z, data.format, data.buffer, function (err) {
-
-							});
-						}
-					}
-				}
+				res.set('Content-Type', "image/" + result.format);
+				res.set('Content-Length', result.buffer.length);
+				res.set('Cache-Control', 'public, max-age=' + config.max_age);
+				res.send(200, result.buffer);
 			}
-		});
-	};
-
-	check(0);
+			stats.served(map.name);
+		}
+	});
 });
 
-http.createServer(app).listen(app.get('port'), app.get('hostname'), function () {
-	console.debug('[Server] Listening on ' + app.get('hostname') + ':' + app.get('port'));
+lhc.init(plugs, config, function (err) {
+	http.createServer(app).listen(app.get('port'), app.get('hostname'), function () {
+		console.debug('[Server] Listening on ' + app.get('hostname') + ':' + app.get('port'));
+	});
 });

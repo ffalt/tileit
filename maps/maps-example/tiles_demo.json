@@ -1,0 +1,26 @@
+{
+	"osm": {
+		"source": {
+			"tiles": {
+				"url": "http://http://a.tile.openstreetmap.org"
+			}
+		}
+	},
+	"osm_memcached_file": {
+		"source": {
+			"memcached": {},
+			"file": {},
+			"tiles": {
+				"url": "http://http://a.tile.openstreetmap.org"
+			}
+		}
+	},
+	"osm_memcached": {
+		"source": {
+			"memcached": {},
+			"tiles": {
+				"url": "http://http://a.tile.openstreetmap.org"
+			}
+		}
+	}
+}

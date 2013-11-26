@@ -1,53 +1,23 @@
 module.exports = {
 	"hostname": "localhost",
 	"port": 80,
-	"debug": false,
-	"allowed_format": ["png", "jpg"],
-	"enabled_plugs": ["memcached", "file", "tirex", "tilethief"],
+	"debug": true,
+	"plugs": ["memcached", "wms", "file", "tirex", "tiles"],
+	"mapconfigpath": "./maps/enabled_maps",
 	"max_age": 3 * 60 * 60 * 1000,
+	"wms": {
+		"concurrent_requests": 10
+	},
 	"tirex": {
 		"config_dir": "./data/tirex/renderer/",
 		"master_socket": "/run/tirex/master.sock",
 		"timeout": 1000
 	},
-	"wms": {
-		"concurrent_requests": 10,
-   		"maps": {
-   			"demowms": {
-   				"url": "http://wms-server",
-   				"format": "png",
-   				"layers": "layername",
-   				"crs": "EPSG:4326",
-   				"tilesize": 256,
-   				"minz": 6,
-   				"maxz": 12,
-   				"path": "./data/tiles.xyz.ext/demowms"
-   			}
-   		}
-   	},
-	"tilethief": {
-		"concurrent_requests": 10,
-		"maps": {
-			"demo": {
-				"backend_url": 'http://somewhere',
-				"backend_map": 'mapname',
-				"minz": 0,
-				"maxz": 18,
-				"allowed_format": ["png"],
-				"path": "./data/tiles.xyz.ext/demo"
-			}
-		}
-	},
 	"file": {
-		"maps": {
-			"demo": {
-				"minz": 0,
-				"maxz": 18,
-				"allowed_format": ["png"],
-				"path": "./data/tiles.xyz.ext/demo",
-				"allow_store": true
-			}
-		}
+		 "path": "./data/xyz.ext/"
+	},
+	"tiles": {
+		"concurrent_requests": 10
 	},
 	"memcached": {
 		"host": "localhost",
@@ -56,14 +26,8 @@ module.exports = {
 		"prefix": "tiles_",
 		"expiration": 1000000,
 		"options": {
-			"timeout": 1000,
-			"maxExpiration": 2592000,
-			"maxValue": 1048576,
-			"poolSize": 10,
-			"retries": 5,
-			"failures": 5,
-			"retry": 30000,
-			"idle": 5000
+			"timeout": 10,
+			"maxExpiration": 2592000
 		}
-	}
+	},
 };
