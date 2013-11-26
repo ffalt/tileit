@@ -11,6 +11,11 @@ Tiles Sources:
   - wms: A mirroring map tile proxy for wms-server
 
 
+## Setup
+
+execute "npm install" to install the required nodejs-packages
+
+
 ## Configuration
 
 ### Plugin Configuration
@@ -45,13 +50,15 @@ module.exports = {
 		"rev": "0",                     // invalidate all tiles by a version number (may be overwritten individually by map config) 
 		"prefix": "tiles_",             // prefix map names (may be overwritten individually by map config)
 		"expiration": 1000000,          // a tile can be replaced after ms (may be overwritten individually by map config)
-		"options": {					// see <a href="https://github.com/3rd-Eden/node-memcached">node-memcached</a> for all options
+		"options": {
 			"timeout": 10,                // timeout of a memcached request
 			"maxExpiration": 2592000      // maximal timeout of a memcached request
 		}
 	}
 };
 ```
+
+see <a href="https://github.com/3rd-Eden/node-memcached">node-memcached</a> for more memcached options
 
 ### Map Configuration
 
