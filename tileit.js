@@ -29,6 +29,19 @@ var lhc = new Machine();
 var app = express();
 app.set('port', config.port || 8080);
 app.set('hostname', config.hostname || 'localhost');
+app.set('title', 'tileit');
+
+//app.use(function (err, req, res, next) {
+//	console.error(err.stack);
+//	res.send(555, 'Something broke!');
+//});
+
+//var count = 0;
+//app.use(function (req, res, next) {
+//	console.log(count++);
+//	console.log('%s %s', req.method, req.url);
+//	next();
+//});
 
 app.get('/stats', function (req, res) {
 	var stat = {
@@ -58,6 +71,7 @@ app.get('/:map/:z/:x/:y.:format/status', function (req, res) {
 	res.json(result);
 });
 
+
 app.get('/:map/:z/:x/:y.:format', function (req, res) {
 	console.debug('[Server] Request: ' + req.url);
 //	console.debug(req.headers);
@@ -84,9 +98,20 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 	stats.validateMapStat(map.name);
 	stats.requested(map.name);
 	stats.current_inc(map.name);
+
+	var aborted = false;
+	req.connection.on('close', function () {
+		aborted = true;
+	});
+	req.socket.on('error', function (err) {
+		aborted = true;
+//		console.log('e', err);
+	});
 	map.getImage(x, y, z, format, function (err, result) {
 		stats.current_dec(map.name);
-		if ((err) || (!result)) {
+		if (aborted) {
+			stats.aborted(map.name);
+		} else if ((err) || (!result)) {
 			res.send(503, err || 'internal error :.(');
 			stats.missing(map.name);
 		} else {
