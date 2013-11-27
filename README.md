@@ -27,7 +27,10 @@ rename `config.js.dist` to `config.js` and edit the settings with your favorite 
 module.exports = {
 	"hostname": "localhost",                        // host adress of the tileserver
 	"port": 80,                                     // port of the tileserver
-	"debug": true,                                  // display debug messages in console
+	"log": {
+		"path": "./logs", 							// path to logfiles
+    	"levels": ["info", "warn", "error", "tiles", "debug"] // set of levels - debug & tiles are logged in extra files
+    },
 	"plugs": ["memcached", "wms", "file", "tirex", "tiles"],  // enabled plugs
 	"configpath": "./maps/enabled_maps",         // load map configs from this path
 	"max_age": 3 * 60 * 60 * 1000,                  // max age header for http-request
@@ -73,7 +76,7 @@ Note: Maps for Tirex are loaded from the Tirex configuration path, so no extra c
 	"mapname": {                    //mandatory, mapname is used in tile-url
 		"minz": 0,                  //optional, default: "0"
 		"maxz": 18,                 //optional, default: "18"
-		"allowed_format": ["png"],  //optional, default: ["png"]
+		"format": "png",            //optional, default: "png"
 		"source": {
 		    "name of plug": { map related options for the source }
 		    ...see source definition below...
