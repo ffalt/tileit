@@ -1,0 +1,117 @@
+{
+	"test_jpeg40": {
+		"format": "jpeg",
+		"source": {
+			"mapnik": {
+				"format": "jpeg40",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_jpeg60": {
+		"format": "jpeg",
+		"source": {
+			"mapnik": {
+				"format": "jpeg60",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_jpeg80": {
+		"format": "jpeg",
+		"source": {
+			"mapnik": {
+				"format": "jpeg80",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_jpeg100": {
+		"format": "jpeg",
+		"source": {
+			"mapnik": {
+				"format": "jpeg100",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_jpeg": {
+		"format": "jpeg",
+		"source": {
+			"mapnik": {
+				"format": "jpeg",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_png8": {
+		"format": "png",
+		"source": {
+			"mapnik": {
+				"format": "png8",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_png8c2": {
+		"format": "png",
+		"source": {
+			"mapnik": {
+				"format": "png8:c=2",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_png8mo": {
+		"source": {
+			"mapnik": {
+				"format": "png8:m=o",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_png8t0": {
+		"source": {
+			"mapnik": {
+				"format": "png8:t=0",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_png32": {
+		"format": "png",
+		"source": {
+			"mapnik": {
+				"format": "png32",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_png": {
+		"format": "png",
+		"source": {
+			"mapnik": {
+				"format": "png",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_tiff": {
+		"format": "tiff",
+		"source": {
+			"mapnik": {
+				"format": "tiff",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	},
+	"test_json": {
+		"format": "json",
+		"source": {
+			"mapnik": {
+				"format": "json",
+				"xml": "./data/mapnik/demo1/demo.xml"
+			}
+		}
+	}
+}

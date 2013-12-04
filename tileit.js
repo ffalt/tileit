@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-var http = require('http');
-var express = require("express");
-var config = require(__dirname + "/config.js");
-var Machine = require(__dirname + "/lib/machine.js").Machine;
-var Projections = require(__dirname + "/lib/utils_projections.js").Projections;
-var Logger = require(__dirname + '/lib/utils_logger.js').Logger;
+var express = require("express")
+	, path = require("path")
+	, config = require(__dirname + "/config.js")
+	, Machine = require(__dirname + "/lib/machine.js").Machine
+	, Projections = require(__dirname + "/lib/utils/projections.js").Projections
+	, Logger = require(__dirname + '/lib/utils/logger.js').Logger;
+//	, StatsD = require('node-statsd').StatsD
+//	, client = new StatsD();
 
 var logger = new Logger(config.log);
-
-//var spawn = require('child_process').spawn;
 
 var plugs = {};
 config.plugs.forEach(function (plugname) {
@@ -25,16 +25,15 @@ app.set('port', config.port || 8080);
 app.set('hostname', config.hostname || 'localhost');
 app.set('title', 'tileit');
 app.disable('x-powered-by');
-
-//app.use(function (err, req, res, next) {
-//	logger.error(err.stack);
-//	res.send(555, 'Something broke!');
-//});
-//var count = 0;
-//app.use(function (req, res, next) {
-//	logger.info('%s %s', req.method, req.url);
-//	next();
-//});
+if (config.preview) {
+	app.get('/preview', function (req, res) {
+		res.redirect('/preview/map.htm');
+	});
+	app.get('/preview/maps.json', function (req, res) {
+		res.json(lhc.getPreviewConfig());
+	});
+	app.use('/preview', express.static(path.resolve(config.preview)));
+}
 
 app.get('/', function (req, res) {
 	res.send('hi');
@@ -44,7 +43,7 @@ app.get('/tilethief', function (req, res) {
 	res.json(lhc.getTileThiefConfig());
 });
 
-app.get('/:map/:z/:x/:y.:format/status', function (req, res) {
+app.get('/tiles/:map/:z/:x/:y.:format/status', function (req, res) {
 	var result = {
 		map: req.params.map,
 		x: req.params.x,
@@ -58,7 +57,7 @@ app.get('/:map/:z/:x/:y.:format/status', function (req, res) {
 	res.json(result);
 });
 
-app.get('/:map/:z/:x/:y.:format', function (req, res) {
+app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
 	logger.debug('[Server] Request', req.url);
 
 	var map = lhc.getMap(req.params.map);
@@ -79,8 +78,8 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 	y = Math.round(y);
 	z = Math.round(z);
 	if (!map.hasValidParams(x, y, z, format)) {
-		logger.logfail(req, 'position/zoom out of bounds');
-		return res.send(404, 'position/zoom out of bounds :.(');
+		logger.logfail(req, 'invalid parameters');
+		return res.send(404, 'invalid parameters :.(');
 	}
 
 	var aborted = false;
@@ -103,7 +102,7 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 				res.send(503, err || 'internal error :.(');
 				logger.logfail(req, err || 'internal error');
 			} else {
-				res.set('Content-Type', "image/" + format);
+				res.set('Content-Type', (treq.format_type || "image") + "/" + treq.format);
 				res.set('Content-Length', buffer.length);
 				res.set('Cache-Control', 'public, max-age=' + config.max_age);
 				res.send(200, buffer);
@@ -117,7 +116,7 @@ app.get('/:map/:z/:x/:y.:format', function (req, res) {
 ;
 
 lhc.init(plugs, config, logger, function (err) {
-	http.createServer(app).listen(app.get('port'), app.get('hostname'), function () {
+	app.listen(app.get('port'), app.get('hostname'), function () {
 		logger.info('[Server] TileIt running on ' + app.get('hostname') + ':' + app.get('port'));
 	});
 });
