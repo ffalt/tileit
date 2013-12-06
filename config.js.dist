@@ -2,7 +2,7 @@ module.exports = {
 	"hostname": "localhost",
 	"port": 80,
 	"plugs": ["memcached", "wms", "file", "tirex", "tiles", "mapnik"],
-	"configpath": "./maps/enabled_maps",
+	"configpath": "./maps/maps-enabled",
 	"preview": './maps/preview',
 	"log": {
     	"path": "./logs",

@@ -33,6 +33,7 @@ module.exports = {
     },
 	"plugs": ["memcached", "wms", "file", "tirex", "tiles"],  // enabled plugs
 	"configpath": "./maps/enabled_maps",         // load map configs from this path
+	"preview": './maps/preview',					// remove this line to disable build-in leaflet preview
 	"max_age": 3 * 60 * 60 * 1000,                  // max age header for http-request
 	"tirex": {
 		"config_dir": "./data/tirex/renderer/",       // path to Tirex config
