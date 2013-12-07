@@ -51,7 +51,6 @@ app.get('/tiles/:map/:z/:x/:y.:format/status', function (req, res) {
 		z: req.params.z,
 		format: req.params.format,
 		area: Projections.pixel_bbox(req.params.x, req.params.y),
-		point: Projections.pointToLatLng_EPSG3857([req.params.x, req.params.y], req.params.z),
 		bounds: Projections.latlng_bbox(req.params.x, req.params.y, req.params.z)
 	};
 	res.json(result);
