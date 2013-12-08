@@ -103,6 +103,7 @@ app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
 				res.send(503, err || 'internal error :.(');
 				logger.logfail(req, err || 'internal error');
 			} else {
+				console.log(treq);
 				res.set('Content-Type', (treq.format_type || "image") + "/" + treq.format);
 				res.set('Content-Length', buffer.length);
 				res.set('Cache-Control', 'public, max-age=' + config.max_age);

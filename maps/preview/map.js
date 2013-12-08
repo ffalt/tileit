@@ -21,7 +21,7 @@ $(document).ready(function () {
 
 	$.getJSON("/preview/maps.json", function (data) {
 		var
-			image_formats = ['png', 'jpeg'];
+			image_formats = ['png', 'jpeg', 'svg', 'utf'];
 		var overlayLayers = {};
 		$.each(data, function (key, val) {
 			if (image_formats.indexOf(val.format) >= 0) {
