@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var express = require("express")
+	, fs = require("fs")
 	, path = require("path")
 	, async = require("async")
 	, config = require(__dirname + "/config.js")
@@ -82,7 +83,6 @@ function TilesCollector() {
 	};
 }
 
-var collector = new TilesCollector();
 
 var mode = 'w';
 if (program.cmd)
@@ -95,10 +95,12 @@ if (mode == 's') {
 		plugs[plugname] = new Plug(plugname, {}, logger);
 	});
 } else {
-	config.plugs.forEach(function (plugname) {
-		var Plug = require(__dirname + '/lib/plug_' + plugname + '.js').Plug;
-		plugs[plugname] = new Plug(plugname, config[plugname], logger);
-	});
+	for (var plugname in config.plugs) {
+		if (config.plugs[plugname].enabled) {
+			var Plug = require(__dirname + '/lib/plug_' + plugname + '.js').Plug;
+			plugs[plugname] = new Plug(plugname, config.plugs[plugname], logger);
+		}
+	}
 }
 var needmap = (mode != 'd');
 var needzoom = (mode != 'd');
@@ -121,6 +123,19 @@ function warmcache(reqs, cb) {
 		q.push(req);
 	})
 }
+
+function DiskTileUsage(rootpath) {
+	var me = this;
+
+	this.scan = function () {
+		fs.readdir(rootpath, function (err, list) {
+
+		})
+	};
+
+	scan();
+}
+
 
 function du(maps, zooms, cb) {
 	if (maps.length == 0) {
@@ -215,21 +230,22 @@ lhc.init(plugs, config, logger, function () {
 
 		});
 	} else
-		collector.collect(maps, zooms, bbox, function (reqs) {
-			switch (mode) {
-				case "s":
-					reqs.forEach(function (req) {
-						var tilekey = [req.map.name, req.z, req.x, req.y].join('/') + '.' + req.map.format;
-						console.log(tilekey);
-					});
+		var collector = new TilesCollector();
+	collector.collect(maps, zooms, bbox, function (reqs) {
+		switch (mode) {
+			case "s":
+				reqs.forEach(function (req) {
+					var tilekey = [req.map.name, req.z, req.x, req.y].join('/') + '.' + req.map.format;
+					console.log(tilekey);
+				});
+				console.log('Total count:', reqs.length);
+				break;
+			default:
+				warmcache(reqs, function (hasErrors) {
 					console.log('Total count:', reqs.length);
-					break;
-				default:
-					warmcache(reqs, function (hasErrors) {
-						console.log('Total count:', reqs.length);
-						console.log('All done' + (hasErrors ? ' (with errors).' : '.'));
-					});
-					break;
-			}
-		});
+					console.log('All done' + (hasErrors ? ' (with errors).' : '.'));
+				});
+				break;
+		}
+	});
 });

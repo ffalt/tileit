@@ -12,10 +12,12 @@ var express = require("express")
 var logger = new Logger(config.log);
 
 var plugs = {};
-config.plugs.forEach(function (plugname) {
-	var Plug = require(__dirname + '/lib/plug_' + plugname + '.js').Plug;
-	plugs[plugname] = new Plug(plugname, config[plugname], logger);
-});
+for (var plugname in config.plugs) {
+	if (config.plugs[plugname].enabled) {
+		var Plug = require(__dirname + '/lib/plug_' + plugname + '.js').Plug;
+		plugs[plugname] = new Plug(plugname, config.plugs[plugname], logger);
+	}
+}
 
 var lhc = new Machine();
 

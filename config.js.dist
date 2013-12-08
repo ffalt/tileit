@@ -1,37 +1,46 @@
 module.exports = {
 	"hostname": "localhost",
 	"port": 80,
-	"plugs": ["memcached", "wms", "file", "tirex", "tiles", "mapnik"],
+	"domain": "localhost",
+	"max_age": 3 * 60 * 60 * 1000,
 	"configpath": "./maps/maps-enabled",
 	"preview": './maps/preview',
 	"log": {
     	"path": "./logs",
     	"levels": ["info", "warn", "error", "tiles", "debug"]
     },
-	"domain": "localhost",
-	"max_age": 3 * 60 * 60 * 1000,
-	"wms": {
-		"concurrent_requests": 10
-	},
-	"tirex": {
-		"config_dir": "./data/tirex/renderer/",
-		"master_socket": "/run/tirex/master.sock",
-		"timeout": 1000
-	},
-	"file": {
-		 "path": "./data/xyz.ext/"
-	},
-	"tiles": {
-		"concurrent_requests": 10
-	},
-	"memcached": {
-		"hosts": "localhost:11211",
-		"rev": "0",
-		"prefix": "tiles_",
-		"expiration": 1000000,
-		"options": {
-			"timeout": 10,
-			"maxExpiration": 2592000
+	"plugs": {
+		"mapnik": {
+			"enabled": false
+		},
+		"wms": {
+			"enabled": false,
+			"concurrent_requests": 10
+		},
+		"tirex": {
+			"enabled": false,
+			"config_dir": "/etc/tirex/renderer/",
+			"master_socket": "/var/run/tirex/master.sock",
+			"timeout": 10000
+		},
+		"file": {
+			"enabled": false,
+			"path": "./data/xyz.ext/"
+		},
+		"tiles": {
+			"enabled": false,
+			"concurrent_requests": 10
+		},
+		"memcached": {
+			"enabled": false,
+			"hosts": "localhost:11211",
+			"rev": "0",
+			"prefix": "tiles_",
+			"expiration": 1000000,
+			"options": {
+				"timeout": 10,
+				"maxExpiration": 2592000
+			}
 		}
-	},
+	}
 };
