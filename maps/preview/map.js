@@ -31,6 +31,11 @@ $(document).ready(function () {
 					maxZoom: val.maxz
 				});
 				overlayLayers[val.desc || val.name] = layer;
+			} else if (val.format == 'utf') {
+				var utfGrid = new L.UtfGrid('/tiles/' + val.name + '/{z}/{x}/{y}.' + val.format, {
+					resolution: 2
+				});
+				overlayLayers[val.desc || val.name] = utfGrid;
 			}
 		});
 		initMaps(overlayLayers);
