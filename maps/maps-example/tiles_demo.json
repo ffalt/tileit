@@ -2,7 +2,7 @@
 	"osm": {
 		"source": {
 			"tiles": {
-				"url": "http://http://a.tile.openstreetmap.org"
+				"url": "http://http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			}
 		}
 	},
@@ -11,7 +11,7 @@
 			"memcached": {},
 			"file": {},
 			"tiles": {
-				"url": "http://http://a.tile.openstreetmap.org"
+				"url": "http://http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			}
 		}
 	},
@@ -19,7 +19,7 @@
 		"source": {
 			"memcached": {},
 			"tiles": {
-				"url": "http://http://a.tile.openstreetmap.org"
+				"url": "http://http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			}
 		}
 	}

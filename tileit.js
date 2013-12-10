@@ -94,6 +94,16 @@ app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
 ////		console.log('e', err);
 //	});
 
+	var formats = {
+		'png': 'image/png',
+		'jpeg': 'image/jpeg',
+		'svg': 'image/svg+xml',
+		'pdf': 'application/pdf',
+		'json': 'text/x-json',
+		'utf': 'text/x-json',
+		'pbf': 'application/x-protobuf'
+	};
+
 	var treq = {
 		mapname: map.name, x: x, y: y, z: z, format: format,
 		finish: function (err, buffer) {
@@ -103,7 +113,8 @@ app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
 				res.send(503, err || 'internal error :.(');
 				logger.logfail(req, err || 'internal error');
 			} else {
-				res.set('Content-Type', (treq.format_type || "image") + "/" + treq.format);
+				var content_type = formats[treq.format] || ('image/' + format);
+				res.set('Content-Type', content_type);
 				res.set('Content-Length', buffer.length);
 				res.set('Cache-Control', 'public, max-age=' + config.max_age);
 				res.send(200, buffer);
