@@ -31,7 +31,6 @@ module.exports = {
 		"path": "./logs", 							// path to logfiles
     	"levels": ["info", "warn", "error", "tiles", "debug"] // set of levels - debug & tiles are logged in extra files
     },
-	"plugs": ["memcached", "wms", "file", "tirex", "tiles"],  // enabled plugs
 	"configpath": "./maps/enabled_maps",         // load map configs from this path
 	"preview": './maps/preview',					// remove this line to disable build-in leaflet preview
 	"max_age": 3 * 60 * 60 * 1000,                  // max age header for http-request
@@ -41,15 +40,19 @@ module.exports = {
 		"timeout": 1000                               // how long to wait for Tirex to render/response
 	},
 	"file": {
+		 "enabled": true,				// enable-disable this plug
 		 "path": "./data/xyz.ext/"      // global path for file plug (may be overwritten individually by map config)
 	},
 	"tiles": {
+		 "enabled": true,				// enable-disable this plug
 		"concurrent_requests": 10       // how many tiles can be process parallel
 	},
 	"wms": {
+		"enabled": true,				// enable-disable this plug
 		"concurrent_requests": 10       // how many wms tiles can be process parallel
 	},
 	"memcached": {
+  		"enabled": true,				// enable-disable this plug
 		"hosts": "localhost:11211",      // host/hosts & ports of memcached
 		"rev": "0",                     // invalidate all tiles by a version number (may be overwritten individually by map config) 
 		"prefix": "tiles_",             // prefix map names (may be overwritten individually by map config)
@@ -97,6 +100,7 @@ see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/map
 
 ```json
 "file": {
+	 "enabled": true,				// enable-disable this plug
     "path": "./some/demo/path/" //optional, if empty, global path from config.js + mapname is used otherwise
 }
 ```
@@ -106,6 +110,7 @@ see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/map
 
 ```json
 "tiles": {
+	 "enabled": true,				// enable-disable this plug
     "url": "http://tiles.example.org/slippytilemap"  //mandatory
 }
 ```
@@ -114,6 +119,7 @@ see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/map
 
 ```json
 "mapcached" : {
+	 "enabled": true,				// enable-disable this plug
 		"rev": "0",                     //optional, global rev is used otherwise (see global config above)
 		"prefix": "tiles_",             //optional, global prefix is used otherwise (see global config above)
 		"expiration": 1000000,          //optional, global expiration is used otherwise (see global config above) 
@@ -124,7 +130,9 @@ see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/map
 #### tirex
 
 ```json
-"tirex" : {} 			//currently no map related options
+"tirex" : {
+	 "enabled": true				// enable-disable this plug
+}
 ```
 
 
