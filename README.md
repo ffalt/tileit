@@ -13,7 +13,17 @@ Tiles Sources:
 
 ## Setup
 
-execute "npm install" to install the required nodejs-packages
+run `npm install` to install the required nodejs-packages
+
+please note: you need to install extra packages for plugins if you want to use them
+
+mapnik plugin: `npm install mapnik`
+
+tirex plugin:	`npm install unix-dgram`
+
+memcached plugin:  `npm install memcached`
+
+
 
 
 ## Configuration
