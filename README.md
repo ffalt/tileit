@@ -6,10 +6,10 @@ a node.js <a href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames">slip
 Tiles Sources:
   - file: just a bunch of file in folders; format "/path_to_in_config/[mapname]/[z]/[x]/[y].[ext]"
   - memcached: serve files from memory
-  - tirex: request & deliver tiles from tirex metatiles renderer derived from <a href="http://svn.openstreetmap.org/applications/utils/tirex/tileserver/">osm tileserver</a>
-  - tiles: A mirroring map tile proxy derived from <a href="https://github.com/yetzt/tilethief.git">tilethief</a>
-  - wms: A mirroring map tile proxy for wms-server
-
+  - tirex: request & deliver tiles from tirex metatiles renderer (derived from <a href="http://svn.openstreetmap.org/applications/utils/tirex/tileserver/">osm tileserver</a>)
+  - tiles: A mirroring map tile proxy (derived from <a href="https://github.com/yetzt/tilethief.git">tilethief</a>)
+  - wms: A mirroring map tile proxy for <a href="http://en.wikipedia.org/wiki/Web_Map_Service">wms</a>-server
+  - mapnik: render tiles with <a href="https://github.com/mapnik">mapnik</a> (derived from <a href="https://github.com/mapbox/tilelive-mapnik">tilelive-mapnik</a>)
 
 ## Setup
 
@@ -34,32 +34,36 @@ module.exports = {
 	"configpath": "./maps/enabled_maps",         // load map configs from this path
 	"preview": './maps/preview',					// remove this line to disable build-in leaflet preview
 	"max_age": 3 * 60 * 60 * 1000,                  // max age header for http-request
-	"tirex": {
-		"config_dir": "./data/tirex/renderer/",       // path to Tirex config
-		"master_socket": "/run/tirex/master.sock",    // path to Tirex Master Unix Datagram Socket
-		"timeout": 1000                               // how long to wait for Tirex to render/response
-	},
-	"file": {
-		 "enabled": true,				// enable-disable this plug
-		 "path": "./data/xyz.ext/"      // global path for file plug (may be overwritten individually by map config)
-	},
-	"tiles": {
-		 "enabled": true,				// enable-disable this plug
-		"concurrent_requests": 10       // how many tiles can be process parallel
-	},
-	"wms": {
-		"enabled": true,				// enable-disable this plug
-		"concurrent_requests": 10       // how many wms tiles can be process parallel
-	},
-	"memcached": {
-  		"enabled": true,				// enable-disable this plug
-		"hosts": "localhost:11211",      // host/hosts & ports of memcached
-		"rev": "0",                     // invalidate all tiles by a version number (may be overwritten individually by map config) 
-		"prefix": "tiles_",             // prefix map names (may be overwritten individually by map config)
-		"expiration": 1000000,          // a tile can be replaced after ms (may be overwritten individually by map config)
-		"options": {
-			"timeout": 10,                // timeout of a memcached request
-			"maxExpiration": 2592000      // maximal timeout of a memcached request
+
+	"plugs": {
+		"tirex": {
+			"enabled": true,				// enable-disable this plug
+			"config_dir": "./data/tirex/renderer/",		// path to Tirex config
+			"master_socket": "/run/tirex/master.sock",	// path to Tirex Master Unix Datagram Socket
+			"timeout": 1000					// how long to wait for Tirex to render/response
+		},
+		"file": {
+			"enabled": true,				// enable-disable this plug
+			"path": "./data/xyz.ext/"      // global path for file plug (may be overwritten individually by map config)
+		},
+		"tiles": {
+			"enabled": true,				// enable-disable this plug
+			"concurrent_requests": 10       // how many tiles can be process parallel
+		},
+		"wms": {
+			"enabled": true,				// enable-disable this plug
+			"concurrent_requests": 10       // how many wms tiles can be process parallel
+		},
+		"memcached": {
+  			"enabled": true,				// enable-disable this plug
+			"hosts": "localhost:11211",      // host/hosts & ports of memcached
+			"rev": "0",                     // invalidate all tiles by a version number (may be overwritten individually by map config) 
+			"prefix": "tiles_",             // prefix map names (may be overwritten individually by map config)
+			"expiration": 1000000,          // a tile can be replaced after ms (may be overwritten individually by map config)
+			"options": {
+				"timeout": 10,                // timeout of a memcached request
+				"maxExpiration": 2592000      // maximal timeout of a memcached request
+			}
 		}
 	}
 };
@@ -94,14 +98,14 @@ Note: Maps for Tirex are loaded from the Tirex configuration path, so no extra c
 see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/maps/map-examples/</a> for examples
 
 
-### Source Configuration
+### Map Source Configuration
 
 #### file
 
 ```json
 "file": {
-	 "enabled": true,				// enable-disable this plug
-    "path": "./some/demo/path/" //optional, if empty, global path from config.js + mapname is used otherwise
+	"enabled": true,				// enable-disable this plug
+	"path": "./some/demo/path/" //optional, if empty, global path from config.js + mapname is used otherwise
 }
 ```
 
@@ -110,8 +114,8 @@ see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/map
 
 ```json
 "tiles": {
-	 "enabled": true,				// enable-disable this plug
-    "url": "http://tiles.example.org/slippytilemap"  //mandatory
+	"enabled": true,				// enable-disable this plug
+	"url": "http://tiles.example.org/slippytilemap"  //mandatory
 }
 ```
 
@@ -119,11 +123,10 @@ see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/map
 
 ```json
 "mapcached" : {
-	 "enabled": true,				// enable-disable this plug
-		"rev": "0",                     //optional, global rev is used otherwise (see global config above)
-		"prefix": "tiles_",             //optional, global prefix is used otherwise (see global config above)
-		"expiration": 1000000,          //optional, global expiration is used otherwise (see global config above) 
-
+	"enabled": true,				// enable-disable this plug
+	"rev": "0",                     //optional, global rev is used otherwise (see global config above)
+	"prefix": "tiles_",             //optional, global prefix is used otherwise (see global config above)
+	"expiration": 1000000,          //optional, global expiration is used otherwise (see global config above) 
 }
 ```
 
@@ -131,7 +134,7 @@ see <a href="https://github.com/ffalt/tileit/tree/master/maps/maps-example">/map
 
 ```json
 "tirex" : {
-	 "enabled": true				// enable-disable this plug
+	"enabled": true				// enable-disable this plug
 }
 ```
 
@@ -142,5 +145,5 @@ general: max-age strategy?
 
 memcached: expiration strategy?
 
-wms: testing
+tests
 
