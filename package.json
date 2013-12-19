@@ -33,6 +33,7 @@
 		"wms",
 		"tirex",
 		"memcached",
+		"mapnik",
 		"geo"
 	],
 	"dependencies": {
@@ -40,8 +41,6 @@
 		"commander": ">= 2.1.0",
 		"express": ">= 3.1.0",
 		"generic-pool": ">= 2.0.4",
-		"mapnik": ">= 1.2.2",
-		"memcached": ">= 0.2.6",
 		"mkdirp": ">= 0.3.5",
 		"proj4": ">= 2.0.0",
 		"request": ">= 2.14.0",
