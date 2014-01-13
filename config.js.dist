@@ -11,7 +11,8 @@ module.exports = {
     },
 	"plugs": {
 		"mapnik": {
-			"enabled": false
+			"enabled": false,
+			"fontpath": "./data/fonts"
 		},
 		"wms": {
 			"enabled": false,
