@@ -7,10 +7,10 @@ var buildMap = function (maps, name, format, mapnikformat) {
 				"xml": "./data/mapnik/demo1/demo.xml",
 				"bufferSize": 128,
 				"tileSize": 256,
-				"metatile": 8, // metatile row=col count
-				"scale": 1,  //cairo
-				"scale_denominator": 0.0, //cairo
-				"tilespath": "./data/xyz.meta/" + name   //must define if metatile >8 or cairo fileformat
+				"cairoScale": 1,
+				"cairoScaleDenominator": 0.0,
+				"metaTileCount": 8, // metatile row=col count
+				"tilesPath": "./data/xyz.meta/" + name   //must define if metaTileCount>0 or cairo fileformat
 			}
 		}
 	};

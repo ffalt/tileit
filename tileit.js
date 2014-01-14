@@ -85,7 +85,7 @@ app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
 
 	var aborted = false;
 
-//todo: req.connection is reused, so listener is possible memoryleak
+//todo: not aborting yet. req.connection is reused, so listener is possible memoryleak
 //	req.connection.on('close', function () {
 //		aborted = true;
 //	});
