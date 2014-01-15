@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-var express = require("express")
-	, fs = require("fs")
+var
+	 fs = require("fs")
 	, path = require("path")
 	, async = require("async")
 	, config = require(__dirname + "/config.js")
