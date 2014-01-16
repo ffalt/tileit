@@ -2,12 +2,12 @@
 
 var
 	 fs = require("fs")
-	, path = require("path")
-	, async = require("async")
-	, config = require(__dirname + "/config.js")
-	, Machine = require(__dirname + "/lib/machine.js").Machine
-	, Projections = require(__dirname + "/lib/utils/projections.js").Projections
-	, Logger = require(__dirname + '/lib/utils/logger.js').Logger;
+	, path = require('path')
+	, async = require('async')
+	, config = require('../config.js')
+	, Machine = require('../lib/machine.js').Machine
+	, Projections = require('../lib/utils/projections.js').Projections
+	, Logger = require('../lib/utils/logger.js').Logger;
 
 var logger = new Logger(config.log);
 
