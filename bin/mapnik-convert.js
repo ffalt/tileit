@@ -48,7 +48,7 @@ function readXML(data, cb) {
 	}
 	var parser = new xml2js.Parser();
 	parser.parseString(data, function (err, result) {
-		var mapjson = mapnikdefs.xmljs2json(result);
+		var mapjson = mapnikdefs.xmljs2mapdef(result);
 		cb(mapjson);
 	});
 }
@@ -56,7 +56,7 @@ function readXML(data, cb) {
 function write(mapjson) {
 	var s = '';
 	if (destext === '.xml') {
-		s = mapnikdefs.toXML(mapjson, true);
+		s = mapnikdefs.mapdef2xml(mapjson, true);
 	} else if (destext === '.json') {
 		s = JSON.stringify(mapjson);
 	}
