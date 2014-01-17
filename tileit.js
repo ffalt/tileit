@@ -6,16 +6,16 @@ var express = require("express")
 	, Machine = require(__dirname + "/lib/machine.js").Machine
 	, Projections = require(__dirname + "/lib/utils/projections.js").Projections
 	, Logger = require(__dirname + '/lib/utils/logger.js').Logger;
-//	, StatsD = require('node-statsd').StatsD
-//	, client = new StatsD();
 
 var logger = new Logger(config.log);
+
+global.logger = logger;
 
 var plugs = {};
 for (var plugname in config.plugs) {
 	if (config.plugs[plugname].enabled) {
 		var Plug = require(__dirname + '/lib/plug_' + plugname + '.js').Plug;
-		plugs[plugname] = new Plug(plugname, config.plugs[plugname], logger);
+		plugs[plugname] = new Plug(plugname, config.plugs[plugname], global.logger);
 	}
 }
 
@@ -59,11 +59,11 @@ app.get('/tiles/:map/:z/:x/:y.:format/status', function (req, res) {
 });
 
 app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
-	logger.debug('[Server] Request', req.url);
+	global.logger.logrequest(req);
 
 	var map = lhc.getMap(req.params.map);
 	if (!map) {
-		logger.logfail(req, 'map not known');
+		global.logger.logfail(req, 'map not known');
 		return res.send(404, 'map not known :.(');
 	}
 
@@ -72,14 +72,14 @@ app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
 	var y = parseFloat(req.params.y);
 	var z = parseFloat(req.params.z);
 	if (isNaN(z) || isNaN(x) || isNaN(y)) {
-		logger.logfail(req, 'invalid parameters');
+		global.logger.logfail(req, 'invalid parameters');
 		return res.send(404, 'invalid parameters :.(');
 	}
 	x = Math.round(x); //fix for leaflet bug sending floats
 	y = Math.round(y);
 	z = Math.round(z);
 	if (!map.hasValidParams(x, y, z, format)) {
-		logger.logfail(req, 'invalid parameters');
+		global.logger.logfail(req, 'invalid parameters');
 		return res.send(404, 'invalid parameters :.(');
 	}
 
@@ -108,17 +108,17 @@ app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
 		mapname: map.name, x: x, y: y, z: z, format: format,
 		finish: function (err, buffer) {
 			if (aborted) {
-				logger.logfail(req, 'aborted');
+				global.logger.logfail(req, 'aborted');
 			} else if ((err) || (!buffer)) {
 				res.send(503, err || 'internal error :.(');
-				logger.logfail(req, err || 'internal error');
+				global.logger.logfail(req, err || 'internal error');
 			} else {
 				var content_type = formats[treq.format] || ('image/' + format);
 				res.set('Content-Type', content_type);
 				res.set('Content-Length', buffer.length);
 				res.set('Cache-Control', 'public, max-age=' + config.max_age);
 				res.send(200, buffer);
-				logger.logtile(req, treq, buffer);
+				global.logger.logtile(req, treq, buffer);
 			}
 		}
 	};
@@ -127,8 +127,8 @@ app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
 })
 ;
 
-lhc.init(plugs, config, logger, function (err) {
+lhc.init(plugs, config, global.logger, function (err) {
 	app.listen(app.get('port'), app.get('hostname'), function () {
-		logger.info('[Server] TileIt running on ' + app.get('hostname') + ':' + app.get('port'));
+		global.logger.info('[Server] TileIt running on ' + app.get('hostname') + ':' + app.get('port'));
 	});
 });

@@ -2,24 +2,26 @@
 	"ber_zoom": {
 		"minz": 11,
 		"maxz": 18,
-		"source": {
-			"wms": {
+		"sources": [
+			{
+				"plug":"wms",
 				"url": "http://fbinter.stadt-berlin.de/fb/wms/senstadt/berlinzoom?",
 				"layers": "0",
 				"crs": "EPSG:4326"
 			}
-		}
+		]
 	},
 	"ber_zoom_cached": {
 		"minz": 11,
 		"maxz": 18,
-		"source": {
-			"file": {},
-			"wms": {
+		"sources": [
+			{"plug":"file"},
+			{
+				"plug":"wms",
 				"url": "http://fbinter.stadt-berlin.de/fb/wms/senstadt/berlinzoom?",
 				"layers": "0",
 				"crs": "EPSG:4326"
 			}
-		}
+		]
 	}
 }

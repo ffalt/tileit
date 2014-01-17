@@ -7,7 +7,7 @@ module.exports = {
 	"preview": './maps/preview',
 	"log": {
     	"path": "./logs",
-    	"levels": ["info", "warn", "error", "tiles", "debug"]
+    	"levels": ["info", "warn", "error", "tiles", "debug", "statsd"]
     },
 	"plugs": {
 		"mapnik": {

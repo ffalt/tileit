@@ -2,10 +2,10 @@ var buildMap = function () {
 	return {
 		"minz": 11,
 		"maxz": 18,
-		"source": {
-			"memcached": {},
-			"file": {}
-		}
+		"sources": [
+			{"plug": "memcached"},
+			{"plug": "file"}
+		]
 	};
 };
 

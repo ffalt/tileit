@@ -1,18 +1,15 @@
 var buildMap = function (maps, name, format, mapnikformat) {
 	maps[name] = {
 		"format": format,
-		"source": {
-			"mapnik": {
+		"sources": [
+			{
+				"plug": "mapnik",
 				"format": mapnikformat,
 				"xml": "./data/mapnik/demo1/demo.xml",
-				"bufferSize": 128,
-				"tileSize": 256,
-				"cairoScale": 1,
-				"cairoScaleDenominator": 0.0,
 				"metaTileCount": 8, // metatile row=col count
 				"tilesPath": "./data/xyz.meta/" + name   //must define if metaTileCount>0 or cairo fileformat
 			}
-		}
+		]
 	};
 };
 
@@ -29,5 +26,6 @@ buildMap(maps, 'demo_png8c2', '', 'png8:c=2');
 buildMap(maps, 'demo_png8c4', '', 'png8:c=4');
 buildMap(maps, 'demo_png8c8', '', 'png8:c=8');
 buildMap(maps, 'demo_svg', 'svg', 'svg');
+buildMap(maps, 'demo_tiff', 'tiff', 'tiff');
 
 exports.maps = maps;
