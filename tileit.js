@@ -15,7 +15,7 @@ var plugs = {};
 for (var plugname in config.plugs) {
 	if (config.plugs[plugname].enabled) {
 		var Plug = require(__dirname + '/lib/plug_' + plugname + '.js').Plug;
-		plugs[plugname] = new Plug(plugname, config.plugs[plugname], global.logger);
+		plugs[plugname] = new Plug(plugname, config.plugs[plugname]);
 	}
 }
 
@@ -127,7 +127,7 @@ app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
 })
 ;
 
-lhc.init(plugs, config, global.logger, function (err) {
+lhc.init(plugs, config, function (err) {
 	app.listen(app.get('port'), app.get('hostname'), function () {
 		global.logger.info('[Server] TileIt running on ' + app.get('hostname') + ':' + app.get('port'));
 	});
