@@ -21,6 +21,7 @@ for (var plugname in config.plugs) {
 
 var lhc = new Machine();
 
+var prefix = ''; //TODO: move to settings
 
 var app = express();
 app.set('port', config.port || 8080);
@@ -28,7 +29,7 @@ app.set('hostname', config.hostname || 'localhost');
 app.set('title', 'tileit');
 app.disable('x-powered-by');
 if (config.preview) {
-	app.get('/preview', function (req, res) {
+	app.get('/_preview', function (req, res) {
 		res.redirect('/preview/map.htm');
 	});
 	app.get('/preview/maps.json', function (req, res) {
@@ -41,11 +42,11 @@ app.get('/', function (req, res) {
 	res.send('hi');
 });
 
-app.get('/tilethief', function (req, res) {
+app.get('/_tilethief', function (req, res) {
 	res.json(lhc.getTileThiefConfig());
 });
 
-app.get('/tiles/:map/:z/:x/:y.:format/status', function (req, res) {
+app.get(prefix+'/:map/:z/:x/:y.:format/status', function (req, res) {
 	var result = {
 		map: req.params.map,
 		x: req.params.x,
@@ -58,7 +59,7 @@ app.get('/tiles/:map/:z/:x/:y.:format/status', function (req, res) {
 	res.json(result);
 });
 
-app.get('/tiles/:map/:z/:x/:y.:format', function (req, res) {
+app.get(prefix+'/:map/:z/:x/:y.:format', function (req, res) {
 	global.logger.logrequest(req);
 
 	var map = lhc.getMap(req.params.map);
