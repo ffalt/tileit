@@ -30,12 +30,12 @@ app.set('title', 'tileit');
 app.disable('x-powered-by');
 if (config.preview) {
 	app.get('/_preview', function (req, res) {
-		res.redirect('/preview/map.htm');
+		res.redirect('/_preview/map.htm');
 	});
-	app.get('/preview/maps.json', function (req, res) {
+	app.get('/_preview/maps.json', function (req, res) {
 		res.json(lhc.getPreviewConfig());
 	});
-	app.use('/preview', express.static(path.resolve(config.preview)));
+	app.use('/_preview', express.static(path.resolve(config.preview)));
 }
 
 app.get('/', function (req, res) {

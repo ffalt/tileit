@@ -5,6 +5,7 @@ a node.js <a href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames">slip
 
 Tiles Sources:
   - file: just a bunch of file in folders; format "/path_to_in_config/[mapname]/[z]/[x]/[y].[ext]"
+  - metafile: reads and servers tiles from a directory of files in metatiles-format
   - memcached: serve files from memory
   - tirex: request & deliver tiles from tirex metatiles renderer (derived from <a href="http://svn.openstreetmap.org/applications/utils/tirex/tileserver/">osm tileserver</a>)
   - tiles: A mirroring map tile proxy (derived from <a href="https://github.com/yetzt/tilethief.git">tilethief</a>)

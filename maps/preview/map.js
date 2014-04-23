@@ -19,7 +19,7 @@ $(document).ready(function () {
 		map.setView([50, 20], 3);
 	};
 
-	$.getJSON("/preview/maps.json", function (data) {
+	$.getJSON("/_preview/maps.json", function (data) {
 		var
 			image_formats = ['png', 'jpeg', 'svg', 'utf'];
 		var overlayLayers = {};
