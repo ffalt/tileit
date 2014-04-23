@@ -21,8 +21,6 @@ for (var plugname in config.plugs) {
 
 var lhc = new Machine();
 
-var prefix = ''; //TODO: move to settings
-
 var app = express();
 app.set('port', config.port || 8080);
 app.set('hostname', config.hostname || 'localhost');
@@ -38,15 +36,15 @@ if (config.preview) {
 	app.use('/_preview', express.static(path.resolve(config.preview)));
 }
 
-app.get('/', function (req, res) {
+app.get(config.prefixpath + '/', function (req, res) {
 	res.send('hi');
 });
 
-app.get('/_tilethief', function (req, res) {
+app.get(config.prefixpath + '/_tilethief', function (req, res) {
 	res.json(lhc.getTileThiefConfig());
 });
 
-app.get(prefix+'/:map/:z/:x/:y.:format/status', function (req, res) {
+app.get(config.prefixpath + '/:map/:z/:x/:y.:format/status', function (req, res) {
 	var result = {
 		map: req.params.map,
 		x: req.params.x,
@@ -59,7 +57,7 @@ app.get(prefix+'/:map/:z/:x/:y.:format/status', function (req, res) {
 	res.json(result);
 });
 
-app.get(prefix+'/:map/:z/:x/:y.:format', function (req, res) {
+app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 	global.logger.logrequest(req);
 
 	var map = lhc.getMap(req.params.map);
