@@ -31,7 +31,7 @@ if (config.preview) {
 		res.redirect('/_preview/map.htm');
 	});
 	app.get('/_preview/maps.json', function (req, res) {
-		res.json(lhc.getPreviewConfig());
+		res.json(lhc.getPreviewConfig(config));
 	});
 	app.use('/_preview', express.static(path.resolve(config.preview)));
 }
