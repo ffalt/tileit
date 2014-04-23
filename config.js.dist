@@ -29,6 +29,9 @@ module.exports = {
 			"enabled": false,
 			"path": "./data/xyz.ext/"
 		},
+		"metafile": {
+			"enabled": false
+		},
 		"tiles": {
 			"enabled": false,
 			"concurrent_requests": 10
