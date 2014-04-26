@@ -90,14 +90,14 @@ if (program.cmd)
 
 if (mode == 's') {
 	//don't load the plugs
-	var Plug = require(__dirname + '/lib/template_plug.js').Plug;
+	var Plug = require(__dirname + '../lib/template_plug.js').Plug;
 	config.plugs.forEach(function (plugname) {
 		plugs[plugname] = new Plug(plugname, {}, logger);
 	});
 } else {
 	for (var plugname in config.plugs) {
 		if (config.plugs[plugname].enabled) {
-			var Plug = require(__dirname + '/lib/plug_' + plugname + '.js').Plug;
+			var Plug = require(__dirname + '../lib/plug_' + plugname + '.js').Plug;
 			plugs[plugname] = new Plug(plugname, config.plugs[plugname], logger);
 		}
 	}
