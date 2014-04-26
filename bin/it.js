@@ -21,7 +21,7 @@ program
 	.version('0.0.1')
 	.option('-m, --map [names]', 'comma-separated list of maps | e.g. demomap1,demomap2')
 	.option('-z, --zoom [levels]', 'comma-separated min/max zoom | e.g. 5 or 5,10, if you need a range use two points 1..5')
-	.option('-b, --bbox [coords]', 'comma-separated bounding box | e.g. nw-lat,nw-lng,se-lat,se-lng ')
+	.option('-b, --bbox [coords]', 'comma-separated bounding box | e.g. n-lat,w-lng,s-lat,e-lng ')
 	.option('-c, --cmd [mode]', '"s": don\' do anything, just print out tile list, "w" warm cache, "d" show disk usage')
 	.parse(process.argv);
 
@@ -124,17 +124,17 @@ function warmcache(reqs, cb) {
 	})
 }
 
-function DiskTileUsage(rootpath) {
-	var me = this;
-
-	this.scan = function () {
-		fs.readdir(rootpath, function (err, list) {
-
-		})
-	};
-
-	scan();
-}
+//function DiskTileUsage(rootpath) {
+//	var me = this;
+//
+//	this.scan = function () {
+//		fs.readdir(rootpath, function (err, list) {
+//
+//		})
+//	};
+//
+//	scan();
+//}
 
 
 function du(maps, zooms, cb) {
