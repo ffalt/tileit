@@ -61,12 +61,12 @@ $(document).ready(function () {
 						'East: ' + L.Util.formatNum(bounds.getNorthEast().lng, 5)
 				);
 
-			//	.option('-b, --bbox [coords]', 'comma-separated bounding box | e.g. n-lat,w-lng,s-lat,e-lng ')
+			//			- `bbox` {Number} bbox in the form `[w, s, e, n]`.
 			$('#head').text('it -m '+layercontrols._activemaps() +' -z ' + map.getZoom() + ' -b ' +
-					L.Util.formatNum(bounds.getNorthEast().lat, 2)+','+
 					L.Util.formatNum(bounds.getSouthWest().lng, 2)+','+
 					L.Util.formatNum(bounds.getSouthWest().lat, 2)+','+
-					L.Util.formatNum(bounds.getNorthEast().lng, 2)
+					L.Util.formatNum(bounds.getNorthEast().lng, 2)+','+
+					L.Util.formatNum(bounds.getNorthEast().lat, 2)
 			);
 		};
 		info.setBaseBoundsText = function () {
