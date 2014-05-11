@@ -7,9 +7,9 @@ module.exports = {
 	"configpath": "./maps/maps-enabled",
 	"preview": './maps/preview',
 	"log": {
-    	"path": "./logs",
-    	"levels": ["info", "warn", "error", "tiles", "debug"]
-    },
+		"path": "./logs",
+		"levels": ["info", "warn", "error", "tiles", "debug"]
+	},
 	"plugs": {
 		"mapnik": {
 			"enabled": false,
