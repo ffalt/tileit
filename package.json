@@ -1,6 +1,6 @@
 {
 	"name": "tileit",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "a node.js slippy maps tile server",
 	"licenses": [
 		{
@@ -46,7 +46,8 @@
 		"request": ">= 2.14.0",
 		"sphericalmercator": ">= 1.0.2",
 		"struct": ">= 0.0.6",
-		"winston": ">= 0.7.2"
+		"winston": ">= 0.7.2",
+		"nsa": ">= 0.0.2"
 	},
 	"engines": {
 		"node": ">= 0.8.15"

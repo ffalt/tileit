@@ -131,3 +131,17 @@ lhc.init(plugs, config, function (err) {
 		global.logger.info('[Server] TileIt running on ' + app.get('hostname') + ':' + app.get('port'));
 	});
 });
+
+/* heartbeat */
+if (config.hasOwnProperty("heartbeat") && typeof config.heartbeat === "string" && config.heartbeat !== "") {
+	var nsa = require("nsa");
+	var heartbeat = new nsa({
+		server: config.heartbeat,
+		interval: "10s"
+	}).start();
+	process.on("SIGINT", function(){
+		heartbeat.end(function(){
+			process.exit();
+		});
+	});
+};

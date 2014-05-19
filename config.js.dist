@@ -6,6 +6,7 @@ module.exports = {
 	"prefixpath": "/tiles",
 	"configpath": "./maps/maps-enabled",
 	"preview": './maps/preview',
+	// "heartbeat": "udp4://127.0.0.1:12345",
 	"log": {
 		"path": "./logs",
 		"levels": ["info", "warn", "error", "tiles", "debug"]
