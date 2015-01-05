@@ -1,6 +1,7 @@
 module.exports = {
 	"hostname": "localhost",
 	"port": 80,
+	// "socket": "/path/to/socket",
 	"domain": "localhost",
 	"max_age": 3 * 60 * 60 * 1000,
 	"prefixpath": "/tiles",

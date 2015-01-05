@@ -2,6 +2,7 @@
 
 var express = require("express")
 	, path = require("path")
+	, fs = require("fs")
 	, config = require(__dirname + "/config.js")
 	, Machine = require(__dirname + "/lib/machine.js").Machine
 	, Projections = require(__dirname + "/lib/utils/projections.js").Projections
@@ -127,9 +128,25 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 ;
 
 lhc.init(plugs, config, function (err) {
-	app.listen(app.get('port'), app.get('hostname'), function () {
-		global.logger.info('[Server] TileIt running on ' + app.get('hostname') + ':' + app.get('port'));
-	});
+	if (config.hasOwnProperty("socket")){
+		var sockfile = path.resolve(config.socket);
+		// check if socket exists
+		fs.exists(sockfile, function(ex){
+			// delete socket on existence
+			if (ex) fs.unlinkSync(sockfile);
+			// set umask to create readable socket
+			var umask = process.umask(0000);
+			app.listen(sockfile, function(){
+				global.logger.info('[Server] TileIt running on socket ' + sockfile);
+				// reset umask
+				process.umask(umask);
+			});
+		});
+	} else {
+		app.listen(app.get('port'), app.get('hostname'), function () {
+			global.logger.info('[Server] TileIt running on ' + app.get('hostname') + ':' + app.get('port'));
+		});
+	}
 });
 
 /* heartbeat */
