@@ -6,7 +6,8 @@ var express = require("express")
 	, config = require(__dirname + "/config.js")
 	, Machine = require(__dirname + "/lib/machine.js").Machine
 	, Projections = require(__dirname + "/lib/utils/projections.js").Projections
-	, Logger = require(__dirname + '/lib/utils/logger.js').Logger;
+	, Logger = require(__dirname + '/lib/utils/logger.js').Logger
+	;
 
 var logger = new Logger(config.log);
 
@@ -107,6 +108,7 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 	var treq = {
 		mapname: map.name, x: x, y: y, z: z, format: format,
 		finish: function (err, buffer) {
+			global.logger.logrequestend(req);
 			if (aborted) {
 				global.logger.logfail(req, 'aborted');
 			} else if ((err) || (!buffer)) {
@@ -124,19 +126,18 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 	};
 
 	map.getImage(treq);
-})
-;
+});
 
 lhc.init(plugs, config, function (err) {
-	if (config.hasOwnProperty("socket")){
+	if (config.hasOwnProperty("socket")) {
 		var sockfile = path.resolve(config.socket);
 		// check if socket exists
-		fs.exists(sockfile, function(ex){
+		fs.exists(sockfile, function (ex) {
 			// delete socket on existence
 			if (ex) fs.unlinkSync(sockfile);
 			// set umask to create readable socket
 			var umask = process.umask(0000);
-			app.listen(sockfile, function(){
+			app.listen(sockfile, function () {
 				global.logger.info('[Server] TileIt running on socket ' + sockfile);
 				// reset umask
 				process.umask(umask);
@@ -156,9 +157,29 @@ if (config.hasOwnProperty("heartbeat") && typeof config.heartbeat === "string" &
 		server: config.heartbeat,
 		interval: "10s"
 	}).start();
-	process.on("SIGINT", function(){
-		heartbeat.end(function(){
+	var timeout;
+	var logstats = function () {
+		var o = {};
+		o["tiles"] = global.logger.stats.total || 0;
+		if (global.logger.stats.queue > 0) {
+			o["tiles"] = o["tiles"] + ' (' + global.logger.stats.queue + ')';
+		}
+		if (global.logger.stats.rendered !== undefined) {
+			o["rendered"] = global.logger.stats.rendered;
+			var s = ((global.logger.stats.render_duration || 0) / (global.logger.stats.rendered || 1));
+			if (s < 100) s = Math.round(s) + ' ms';
+			else s = (s / 1000).toFixed(2) + ' s';
+			o["⌀ render"] = s;
+		}
+		console.log(global.logger.stats, o);
+		timeout = setTimeout(logstats, 1000);
+	};
+	logstats();
+
+	process.on("SIGINT", function () {
+		clearTimeout(timeout);
+		heartbeat.end(function () {
 			process.exit();
 		});
 	});
-};
+}

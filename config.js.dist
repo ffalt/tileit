@@ -10,7 +10,7 @@ module.exports = {
 	// "heartbeat": "udp4://127.0.0.1:12345",
 	"log": {
 		"path": "./logs",
-		"levels": ["info", "warn", "error", "tiles", "debug"]
+		"levels": ["info", "warn", "error", "tiles", "debug", "stats"]
 	},
 	"plugs": {
 		"mapnik": {
