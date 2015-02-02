@@ -3,4 +3,5 @@
 config.js
 data/
 local/
+logs/
 node_modules/
