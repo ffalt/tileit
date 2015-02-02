@@ -171,7 +171,7 @@ if (config.hasOwnProperty("heartbeat") && typeof config.heartbeat === "string" &
 			else s = (s / 1000).toFixed(2) + ' s';
 			o["⌀ render"] = s;
 		}
-		console.log(global.logger.stats, o);
+		heartbeat.leak(o);
 		timeout = setTimeout(logstats, 1000);
 	};
 	logstats();
