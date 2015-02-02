@@ -60,7 +60,6 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format/status', function (req, res)
 });
 
 app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
-	global.logger.logrequest(req);
 
 	var map = lhc.getMap(req.params.map);
 	if (!map) {
@@ -83,6 +82,8 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 		global.logger.logfail(req, 'invalid parameters');
 		return res.send(404, 'invalid parameters :.(');
 	}
+
+	global.logger.logrequest(req);
 
 	var aborted = false;
 
