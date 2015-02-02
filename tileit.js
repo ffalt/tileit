@@ -151,12 +151,9 @@ lhc.init(plugs, config, function (err) {
 });
 
 /* heartbeat */
-if (config.hasOwnProperty("heartbeat") && typeof config.heartbeat === "string" && config.heartbeat !== "") {
+if (config.hasOwnProperty("nsa")) {
 	var nsa = require("nsa");
-	var heartbeat = new nsa({
-		server: config.heartbeat,
-		interval: "10s"
-	}).start();
+	var heartbeat = new nsa(config.nsa).start();
 	var timeout;
 	var logstats = function () {
 		var o = {};
