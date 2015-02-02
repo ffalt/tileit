@@ -159,7 +159,7 @@ if (config.hasOwnProperty("nsa")) {
 		var o = {};
 		o["tiles"] = global.logger.stats.total || 0;
 		if (global.logger.stats.queue > 0) {
-			o["tiles"] = o["tiles"] + ' (' + global.logger.stats.queue + ')';
+			o["tiles"] = o["tiles"] + '(' + global.logger.stats.queue + ')';
 		}
 		if (global.logger.stats.rendered !== undefined) {
 			o["rendered"] = global.logger.stats.rendered;
