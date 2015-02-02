@@ -164,8 +164,8 @@ if (config.hasOwnProperty("nsa")) {
 		if (global.logger.stats.rendered !== undefined) {
 			o["rendered"] = global.logger.stats.rendered;
 			var s = ((global.logger.stats.render_duration || 0) / (global.logger.stats.rendered || 1));
-			if (s < 100) s = Math.round(s) + ' ms';
-			else s = (s / 1000).toFixed(2) + ' s';
+			if (s < 100) s = Math.round(s) + 'ms';
+			else s = (s / 1000).toFixed(2) + 's';
 			o["⌀ render"] = s;
 		}
 		heartbeat.leak(o);
