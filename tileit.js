@@ -169,7 +169,7 @@ if (config.hasOwnProperty("nsa")) {
 			else s = (s / 1000).toFixed(2) + 's';
 			o["⌀ render"] = s;
 		}
-		heartbeat.leak(o);
+		heartbeat.leak(o,function(){});
 		timeout = setTimeout(logstats, 1000);
 	};
 	logstats();
