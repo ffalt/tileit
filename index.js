@@ -25,7 +25,6 @@ function TileIt() {
 	var me = this;
 	me.init = function (config, cb) {
 		var plugs = new Plugs(config.plugs);
-		console.log(plugs);
 		me.lhc = new Machine();
 		me.lhc.init(plugs, config, cb);
 	};
