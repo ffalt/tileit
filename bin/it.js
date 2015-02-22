@@ -28,10 +28,12 @@ program
 	.option('-c, --cmd [mode]', '"s": don\' do anything, just print out tile list, "w" warm cache, "d" show disk usage')
 	.parse(process.argv);
 
+var mode = 's';
+if (program.cmd)
+	mode = program.cmd;
 
 function TilesCollector() {
 	var me = this;
-
 	this.collectmapzoom = function (map, zoom, bbox, cb) {
 		var result = [];
 		var xybox = [];
@@ -39,7 +41,7 @@ function TilesCollector() {
 			xybox = Projections.xy_bbox_full(zoom);
 		} else {
 			console.log(bbox);
-//			- `bbox` {Number} bbox in the form `[w, s, e, n]`.
+			// bbox` {Number} bbox in the form `[w, s, e, n]`.
 			xybox = Projections.xy_bbox(bbox, zoom, 256);
 			if (xybox[0] > xybox[2]) {
 				var c = xybox[0];
@@ -52,7 +54,7 @@ function TilesCollector() {
 				xybox[3] = c;
 			}
 			console.log(xybox);
-//			lng_lat_bbox, zoom, tilesize
+			// lng_lat_bbox, zoom, tilesize
 		}
 		for (var x = xybox[0]; x <= xybox[2]; x++) {
 			for (var y = xybox[1]; y <= xybox[3]; y++) {
@@ -67,7 +69,6 @@ function TilesCollector() {
 		}
 		cb(result);
 	};
-	//http://odcdn.de:7772/suisse/8/135/91.png
 
 	this.collectmapzooms = function (map, zooms, bbox, cb) {
 		var result = [];
@@ -81,32 +82,13 @@ function TilesCollector() {
 		});
 	};
 
-
-//	Map.prototype.getStoragePaths = function () {
-//		var caller = this;
-//		return this.mapplugs.map(function (mapplug) {
-//			if (typeof mapplug.plug.getStoragePath == 'function') {
-//				//collecting for maybe storing if any later plug got the image
-//				return mapplug.plug.getStoragePath(caller.name, mapplug.options);
-//			}
-//			return null;
-//		}).filter(function (storagepath) {
-//			return (storagepath);
-//		});
-//	};
-
 	this.collect = function (maps, zooms, bbox, cb) {
 		var result = [];
 		async.forEachSeries(maps, function (map, nextcb) {
-//				if (map.getStoragePaths().length == 0) {
-//					console.log('map', map.name, 'does not store files');
-//					nextcb();
-//				} else {
 				me.collectmapzooms(map, zooms, bbox, function (reqs) {
 					result = result.concat(reqs);
 					nextcb();
 				});
-//				}
 			},
 			function () {
 				cb(result);
@@ -114,11 +96,6 @@ function TilesCollector() {
 		);
 	};
 }
-
-
-var mode = 's';
-if (program.cmd)
-	mode = program.cmd;
 
 if (mode == 's') {
 	//don't load the plugs
@@ -156,39 +133,6 @@ function warmcache(reqs, cb) {
 	reqs.forEach(function (req) {
 		q.push(req);
 	})
-}
-
-//function DiskTileUsage(rootpath) {
-//	var me = this;
-//
-//	this.scan = function () {
-//		fs.readdir(rootpath, function (err, list) {
-//
-//		})
-//	};
-//
-//	scan();
-//}
-
-
-function du(maps, zooms, cb) {
-//	if (maps.length == 0) {
-//		maps = lhc.getMaps();
-//	}
-//	async.forEachSeries(maps, function (map, nextcb) {
-//		var tiledirs = map.getStoragePaths();
-//		if (tiledirs.length > 0) {
-//			async.forEachSeries(tiledirs, function (tiledir, ncb) {
-//				console.log(tiledir);
-//				ncb();
-//			}, function () {
-//				nextcb();
-//			});
-//		} else
-//			nextcb();
-//	}, function () {
-//		cb();
-//	});
 }
 
 lhc.init(plugs, config, function () {
@@ -260,30 +204,28 @@ lhc.init(plugs, config, function () {
 	}
 
 	if (mode == 'd') {
-		du(maps, zooms, function () {
-
-		});
 		console.log('under construction');
 		process.exit(1);
-	} else
+	} else {
 		var collector = new TilesCollector();
-	collector.collect(maps, zooms, bbox, function (reqs) {
-		switch (mode) {
-			case "s":
-				console.log('Just printing out tile adresses');
-				reqs.forEach(function (req) {
-					var tilekey = [req.map.name, req.z, req.x, req.y].join('/') + '.' + req.map.format;
-					console.log(tilekey);
-				});
-				console.log('Total count:', reqs.length);
-				break;
-			default:
-				console.log('Warming cache');
-				warmcache(reqs, function (hasErrors) {
+		collector.collect(maps, zooms, bbox, function (reqs) {
+			switch (mode) {
+				case "s":
+					console.log('Just printing out tile adresses');
+					reqs.forEach(function (req) {
+						var tilekey = [req.map.name, req.z, req.x, req.y].join('/') + '.' + req.map.format;
+						console.log(tilekey);
+					});
 					console.log('Total count:', reqs.length);
-					console.log('All done' + (hasErrors ? ' (with errors).' : '.'));
-				});
-				break;
-		}
-	});
+					break;
+				default:
+					console.log('Warming cache');
+					warmcache(reqs, function (hasErrors) {
+						console.log('Total count:', reqs.length);
+						console.log('All done' + (hasErrors ? ' (with errors).' : '.'));
+					});
+					break;
+			}
+		});
+	}
 });

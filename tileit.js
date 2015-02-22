@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+if (module.parent) {
+	module.exports = require(__dirname + "/index.js");
+	return;
+}
+
 var express = require("express")
 	, path = require("path")
 	, fs = require("fs")
@@ -78,6 +83,13 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 	x = Math.round(x); //fix for leaflet bug sending floats
 	y = Math.round(y);
 	z = Math.round(z);
+
+	if (map.options.tms) {
+		//TMS switches y
+		//http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification
+		y = (Math.pow(2, z) - 1) - y;
+	}
+
 	if (!map.hasValidParams(x, y, z, format)) {
 		global.logger.logfail(req, 'invalid parameters');
 		return res.send(404, 'invalid parameters :.(');
@@ -123,12 +135,12 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 				res.send(200, buffer);
 				global.logger.logtile(req, treq, buffer);
 			}
-		}
+		},
+		lhc: lhc
 	};
 
 	map.getImage(treq);
 });
-
 lhc.init(plugs, config, function (err) {
 	if (config.hasOwnProperty("socket")) {
 		var sockfile = path.resolve(config.socket);
@@ -169,7 +181,8 @@ if (config.hasOwnProperty("nsa")) {
 			else s = (s / 1000).toFixed(2) + 's';
 			o["⌀ render"] = s;
 		}
-		heartbeat.leak(o,function(){});
+		heartbeat.leak(o, function () {
+		});
 		timeout = setTimeout(logstats, 1000);
 	};
 	logstats();

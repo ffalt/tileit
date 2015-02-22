@@ -36,6 +36,9 @@ module.exports = {
 			"enabled": false,
 			"path": "./data/xyz.ext/"
 		},
+		"composite": {
+			"enabled": false
+		},
 		"metafile": {
 			"enabled": false
 		},

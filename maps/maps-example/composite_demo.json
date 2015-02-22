@@ -1,0 +1,47 @@
+{
+  "ne1": {
+    "tms": true,
+    "sources": [
+      {
+        "plug": "file",
+        "path": "./data/tiles/tiles/ne1",
+        "cm": "gdal2tiles.py -v -z 0-2 --profile=mercator --s_srs=epsg:900913 NE1_HR_LC_SR_W.tif ne1"
+      }
+    ]
+  },
+  "overlay": {
+    "sources": [
+      {
+        "plug": "tiles",
+        "url": "http://tiles.odcdn.de/plz-et/{z}/{x}/{y}.png"
+      }
+    ]
+  },
+  "base": {
+    "sources": [
+      {
+        "plug": "tiles",
+        "url": "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      }
+    ]
+  },
+  "merge": {
+    "sources": [
+      {
+        "plug": "file",
+        "path": "./data/tiles/tiles/merge"
+      },
+      {
+        "plug": "composite",
+        "maps": [
+          {
+            "name": "base"
+          },
+          {
+            "name": "overlay"
+          }
+        ]
+      }
+    ]
+  }
+}

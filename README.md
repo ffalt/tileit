@@ -10,7 +10,8 @@ Tiles Sources:
 * `tiles` A mirroring map tile proxy (derived from [tilethief](https://github.com/yetzt/tilethief.git))
 * `wms` A mirroring map tile proxy for [wms-server](http://en.wikipedia.org/wiki/Web_Map_Service)
 * `mapnik` Render tiles with [mapnik](https://github.com/mapnik) (derived from [tilelive-mapnik](https://github.com/mapbox/tilelive-mapnik))
-
+* `composite` Merge tiles with from any source above
+ 
 ## Setup
 
 run `npm install` to install the required nodejs-packages
@@ -22,6 +23,8 @@ mapnik plugin: `npm install mapnik`
 tirex plugin:	`npm install unix-dgram`
 
 memcached plugin:  `npm install memcached`
+
+composite plugin:  `npm install images`
 
 
 ## Configuration
