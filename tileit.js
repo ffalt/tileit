@@ -8,24 +8,22 @@ if (module.parent) {
 var express = require("express")
 	, path = require("path")
 	, fs = require("fs")
-	, config = require(__dirname + "/config.js")
+	, Plugs = require(__dirname + "/lib/plugs.js").Plugs
 	, Machine = require(__dirname + "/lib/machine.js").Machine
 	, Projections = require(__dirname + "/lib/utils/projections.js").Projections
 	, Logger = require(__dirname + '/lib/utils/logger.js').Logger
 	;
 
-var logger = new Logger(config.log);
+if (!fs.existsSync(__dirname + "/config.js")) {
+	console.log('Please create a config.js (see config.dist for an example)');
+	return;
+}
+var config = require(__dirname + "/config.js");
 
+var logger = new Logger(config.log);
 global.logger = logger;
 
-var plugs = {};
-for (var plugname in config.plugs) {
-	if (config.plugs[plugname].enabled) {
-		var Plug = require(__dirname + '/lib/plug_' + plugname + '.js').Plug;
-		plugs[plugname] = new Plug(plugname, config.plugs[plugname]);
-	}
-}
-
+var plugs = new Plugs(config.plugs);
 var lhc = new Machine();
 
 var app = express();
