@@ -24,12 +24,12 @@ global.logger = new Logger();
 function TileIt() {
 	var me = this;
 	me.init = function (config, cb) {
-		var plugs = new Plugs(config.plugs);
+		me.plugs = new Plugs(config.plugs);
 		me.lhc = new Machine();
-		me.lhc.init(plugs, config, cb);
+		me.lhc.init(me.plugs, config, cb);
 	};
 	me.addMap = function (opts) {
-		return me.lhc.addMap(opts);
+		return me.lhc.addMap(opts, me.plugs);
 	};
 	me.get = function (mapname, x, y, z, format, cb) {
 		var map = me.lhc.getMap(mapname);
