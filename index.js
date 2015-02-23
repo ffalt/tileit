@@ -36,7 +36,7 @@ function TileIt() {
 		if (!map) return cb('Unknown map');
 		var treq = {
 			mapname: mapname, x: x, y: y, z: z, format: format,
-			finish: cb
+			finish: cb, lhc: me.lhc
 		};
 		map.getImage(treq);
 	};
