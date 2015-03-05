@@ -31,6 +31,19 @@ function TileIt() {
 	me.addMap = function (opts) {
 		return me.lhc.addMap(opts, me.plugs);
 	};
+	me.getMap = function (mapname) {
+		return me.lhc.getMap(mapname);
+	};
+	me.removeMap = function (mapname) {
+		var map = me.lhc.getMap(mapname);
+		if (map) {
+			me.lhc.removeMap(map);
+			for (var key in me.plugs) {
+				if (me.plugs[key].clearCache)
+					me.plugs[key].clearCache(mapname);
+			}
+		}
+	};
 	me.get = function (mapname, x, y, z, format, cb) {
 		var map = me.lhc.getMap(mapname);
 		if (!map) return cb('Unknown map');
