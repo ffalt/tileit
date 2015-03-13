@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html ng-app="mapapp">
+<head>
+	<title>TileIt Preview</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="assets/bower_components/leaflet/dist/leaflet.css"/>
+	<link rel="stylesheet" href="assets/bower_components/leaflet-areaselect/src/leaflet-areaselect.css"/>
+	<link rel="stylesheet" href="assets/bower_components/font-awesome/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="assets/css/preview.css"/>
+	<script type="text/javascript" src="assets/bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/bower_components/leaflet/dist/leaflet.js"></script>
+	<script type="text/javascript" src="assets/bower_components/zeroclipboard/dist/ZeroClipboard.min.js"></script>
+	<script type="text/javascript" src="assets/bower_components/leaflet-areaselect/src/leaflet-areaselect.js"></script>
+	<script type="text/javascript" src="assets/bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript" src="assets/bower_components/angular-zeroclipboard/src/angular-zeroclipboard.js"></script>
+	<script type="text/javascript" src="assets/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+	<script type="text/javascript" src="assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script type="text/javascript" src="assets/js/preview.js"></script>
+</head>
+<body ng-controller="MapController">
+
+<div id="topnav">TileIt Preview</div>
+
+<div id="sidebar">
+	<nav class="bs-docs-sidebar">
+		<ul class="nav bs-docs-sidenav">
+			<li ng-repeat="c in maps" ng-class="{active:c.active}">
+				<a ng-bind="c.name" href ng-click="c.active=!c.active"></a>
+				<ul class="nav">
+					<li ng-repeat="m in c.maps" ng-class="{active:m.active}"><a href ng-click="selectMap(m)" ng-bind="m.name"></a></li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+</div>
+
+<div id="content">
+	<div id="top-content">
+		<leaflet id="map" controls="leaflet.controls" event-broadcast="leaflet.events" center="leaflet.center" layers="leaflet.layers"></leaflet>
+	</div>
+	<div id="bottom-content">
+		<div ng-show="selection.current_latlng" class="footer-selection-latlng">
+			lat: <span ng-bind="selection.current_latlng.lat|number:8"></span>
+			lng: <span ng-bind="selection.current_latlng.lng|number:8"></span>
+		</div>
+		<div ng-show="selection.current_tile" class="footer-selection-tile" ng-click="displayTile(selection.current_tile)">
+			z: <span ng-bind="selection.current_tile.z"></span>
+			x: <span ng-bind="selection.current_tile.x"></span>
+			y: <span ng-bind="selection.current_tile.y"></span>
+		</div>
+		<!--<div a">-->
+		<!---->
+		<!--warm cache:-->
+		<!--<span>-->
+		<!--</span>-->
+		<!--</div>-->
+		<div ng-show="selection.bounds" class="footer-selection-area">
+
+			w: <span ng-bind="selection.bounds.getWest()|number:2"></span>
+			s: <span ng-bind="selection.bounds.getSouth()|number:2"></span>
+			e: <span ng-bind="selection.bounds.getEast()|number:2"></span>
+			n: <span ng-bind="selection.bounds.getNorth()|number:2"></span>
+
+			<small>
+				<a href ui-zeroclip title="Copy warm cache command" zeroclip-text="node it.js -c w -m {{selection.layer.name}} -z {{selection.map.getZoom()}} -b {{selection.bounds.getWest()|number:2}},{{selection.bounds.getSouth()|number:2}},{{selection.bounds.getEast()|number:2}},{{selection.bounds.getNorth()|number:2}}">Copy warm cache cmd</a>
+			</small>
+		</div>
+	</div>
+</div>
+
+<div id="sidebar-resizer" resizer="vertical" resizer-width="4" resizer-left="#sidebar" resizer-right="#content" resizer-max="400"></div>
+
+<script type="text/ng-template" id="partials/modal-tile.html">
+	<div class="modal-header">
+		<h3 class="modal-title">
+			Z: <span ng-bind="tile.z"></span>
+			X: <span ng-bind="tile.x"></span>
+			Y: <span ng-bind="tile.y"></span>
+		</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form">
+			<label>z</label>
+			<input type="number" ng-model="tile.z">
+			<label>x</label>
+			<input type="number" ng-model="tile.x">
+			<label>y</label>
+			<input type="number" ng-model="tile.y">
+		</form>
+		<div ng-repeat="(key, value) in tile.layers" class="tile-preview">
+			<a target="_blank" ng-href="{{getSrc(key,value)}}" ng-bind="key"></a><br/>
+			<img ng-src="{{getSrc(key,value)}}">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="ok()">OK</button>
+		<!--<button class="btn btn-warning" ng-click="cancel()">Cancel</button>-->
+	</div>
+</script>
+
+</body>
+</html>

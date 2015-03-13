@@ -1,6 +1,7 @@
 var buildMap = function (maps, name, format, mapnikformat) {
 	maps[name] = {
 		"format": format,
+		"category": "Examples",
 		"sources": [
 			{
 				"plug": "mapnik",

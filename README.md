@@ -26,6 +26,7 @@ memcached plugin:  `npm install memcached`
 
 composite plugin:  `npm install images`
 
+to build the preview-webapp install `npm install -g bower` and execute `bower install` in /maps/preview/assets
 
 ## Configuration
 
@@ -34,7 +35,7 @@ composite plugin:  `npm install images`
 
 ## TODO
 
-* general: max-age strategy?
+* general: max-age for files strategy?
 * memcached: expiration strategy?
 * tests
 

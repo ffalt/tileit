@@ -32,9 +32,6 @@ app.set('hostname', config.hostname || 'localhost');
 app.set('title', 'tileit');
 app.disable('x-powered-by');
 if (config.preview) {
-	app.get('/_preview', function (req, res) {
-		res.redirect('/_preview/map.htm');
-	});
 	app.get('/_preview/maps.json', function (req, res) {
 		res.json(lhc.getPreviewConfig(config));
 	});
@@ -67,7 +64,7 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 	var map = lhc.getMap(req.params.map);
 	if (!map) {
 		global.logger.logfail(req, 'map not known');
-		return res.send(404, 'map not known :.(');
+		return res.status(404).send('map not known :.(');
 	}
 
 	var format = req.params.format.toLowerCase();
@@ -76,7 +73,7 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 	var z = parseFloat(req.params.z);
 	if (isNaN(z) || isNaN(x) || isNaN(y)) {
 		global.logger.logfail(req, 'invalid parameters');
-		return res.send(404, 'invalid parameters :.(');
+		return res.status(404).send('invalid parameters :.(');
 	}
 	x = Math.round(x); //fix for leaflet bug sending floats
 	y = Math.round(y);
@@ -90,7 +87,7 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 
 	if (!map.hasValidParams(x, y, z, format)) {
 		global.logger.logfail(req, 'invalid parameters');
-		return res.send(404, 'invalid parameters :.(');
+		return res.status(404).send('invalid parameters :.(');
 	}
 
 	global.logger.logrequest(req);
@@ -123,14 +120,14 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 			if (aborted) {
 				global.logger.logfail(req, 'aborted');
 			} else if ((err) || (!buffer)) {
-				res.send(503, err || 'internal error :.(');
+				status(503).send(err || 'internal error :.(');
 				global.logger.logfail(req, err || 'internal error');
 			} else {
 				var content_type = formats[treq.format] || ('image/' + format);
 				res.set('Content-Type', content_type);
 				res.set('Content-Length', buffer.length);
 				res.set('Cache-Control', 'public, max-age=' + config.max_age);
-				res.send(200, buffer);
+				res.status(200).send(buffer);
 				global.logger.logtile(req, treq, buffer);
 			}
 		},

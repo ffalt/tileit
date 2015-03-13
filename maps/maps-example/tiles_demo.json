@@ -1,29 +1,32 @@
 {
-	"osm": {
-		"sources": [
-			{
-				"plug":"tiles",
-				"url": "http://http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
-			}
-		]
-	},
-	"osm_memcached_file": {
-		"sources": [
-			{"plug":"memcached"},
-			{"plug":"file"},
-			{
-			"plug":"tiles",
-				"url": "http://http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
-			}
-		]
-	},
-	"osm_memcached": {
-		"sources": [
-			{"plug":"memcached"},
-			{
-				"plug":"tiles",
-				"url": "http://http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
-			}
-		]
-	}
+  "osm": {
+	"category": "Examples",
+	"sources": [
+	  {
+		"plug": "tiles",
+		"url": "http://http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
+	  }
+	]
+  },
+  "osm_memcached_file": {
+	"category": "Examples",
+	"sources": [
+	  {"plug": "memcached"},
+	  {"plug": "file"},
+	  {
+		"plug": "tiles",
+		"url": "http://http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
+	  }
+	]
+  },
+  "osm_memcached": {
+	"category": "Examples",
+	"sources": [
+	  {"plug": "memcached"},
+	  {
+		"plug": "tiles",
+		"url": "http://http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
+	  }
+	]
+  }
 }

@@ -2,6 +2,7 @@ var buildMap = function () {
 	return {
 		"minz": 11,
 		"maxz": 18,
+		"category": "Examples",
 		"sources": [
 			{"plug": "memcached"},
 			{"plug": "file"}
