@@ -21,6 +21,10 @@ module.exports = {
 		"mapnik": {
 			"enabled": false,
 			"fontpath": "./data/fonts"
+			//"pool": {
+				//"size": 20, //default 20
+				//"idleTimeoutMillis": 300000 //default 5 * 60 * 1000
+			//}
 		},
 		"wms": {
 			"enabled": false,
