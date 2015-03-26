@@ -120,7 +120,7 @@ app.get(config.prefixpath + '/:map/:z/:x/:y.:format', function (req, res) {
 			if (aborted) {
 				global.logger.logfail(req, 'aborted');
 			} else if ((err) || (!buffer)) {
-				status(503).send(err || 'internal error :.(');
+				res.status(503).send(err || 'internal error :.(');
 				global.logger.logfail(req, err || 'internal error');
 			} else {
 				var content_type = formats[treq.format] || ('image/' + format);
