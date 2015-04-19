@@ -34,6 +34,10 @@ function TileIt() {
 	me.getMap = function (mapname) {
 		return me.lhc.getMap(mapname);
 	};
+	me.getMaps = function () {
+		return me.lhc.maps;
+	};
+
 	me.removeMap = function (mapname) {
 		var map = me.lhc.getMap(mapname);
 		if (map) {
