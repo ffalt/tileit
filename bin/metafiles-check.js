@@ -71,7 +71,7 @@ var checkfile = function (filename, o, next) {
 	var mtile = new MetaTile(t.x, t.y, t.z, o.options);
 	mtile.openFile(o.path, function (err, mfile) {
 		if (err) return console.log(err);
-		var q = async.queue(function (tile, cb) {
+		async.eachSeries(mtile.getTiles(), function (tile, cb) {
 			//console.log(t.map, tile);
 			mtile.readFileTile(tile, mfile, function (err, buffer) {
 				if (err) {
@@ -80,12 +80,10 @@ var checkfile = function (filename, o, next) {
 				}
 				cb();
 			});
-		});
-		q.drain = function () {
+		}, function () {
 			mtile.closeFile(mfile);
 			next();
-		};
-		q.push(mtile.getTiles());
+		});
 	});
 };
 
