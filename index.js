@@ -38,8 +38,14 @@ function TileIt() {
 		return me.lhc.maps;
 	};
 
-	me.warmCache = function (mapname, zoom, bbox, cb) {
-		me.lhc.warmCache(mapname, zoom, bbox, cb);
+	me.warmCache = function (options, cb) {
+		/*
+		 options.maps: array of mapnames
+		 options.zooms: array of zoom integer
+		 options.bbox:  array [w,s,n,e] bounding box
+		 options.progress = function(index,total,mapname,z,x,y,format,err,nextCB)
+		 */
+		me.lhc.warmCache(options, cb);
 	};
 
 	me.removeMap = function (mapname) {
