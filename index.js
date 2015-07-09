@@ -38,6 +38,10 @@ function TileIt() {
 		return me.lhc.maps;
 	};
 
+	me.warmCache = function (mapname, zoom, bbox, cb) {
+		me.lhc.warmCache(mapname, zoom, bbox, cb);
+	};
+
 	me.removeMap = function (mapname) {
 		var map = me.lhc.getMap(mapname);
 		if (map) {
