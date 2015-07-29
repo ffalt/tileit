@@ -66,6 +66,7 @@ function warmcache(reqs, cb) {
 		cb(hasErrors)
 	};
 	reqs.forEach(function (req) {
+		req.lhc = lhc;
 		q.push(req);
 	})
 }
